@@ -1,9 +1,5 @@
 function App() {
-  const a = "sdsd";
-  return (
-    <>
-    </>
-  )
+  return <></>;
 }
 
 export default App;
