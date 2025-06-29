@@ -1,8 +1,12 @@
+import DragOverlay from "@/components/home/DragOverlay";
 import Header from "@/components/home/Header";
 import Slogan from "@/components/home/Slogan";
 import Uploader from "@/components/home/Uploader";
+import { useDraggingFile } from "@/hooks/useDraggingFile";
 
 const Home = () => {
+  const isDragging = useDraggingFile();
+
   return (
     <main className="flex h-full min-h-screen flex-col justify-center bg-[#08090A] text-white">
       <Header />
@@ -10,6 +14,7 @@ const Home = () => {
         <Slogan />
         <Uploader />
       </div>
+      {isDragging && <DragOverlay />}
     </main>
   );
 };
