@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import DrawingToolbar from "@/components/presentation/DrawingToolbar";
 import PDFViewer from "@/components/presentation/PDFViewer";
 import SlideNavigation from "@/components/presentation/SlideNavigation";
 
@@ -18,6 +19,7 @@ const Presentation = () => {
         pageNumber={pageNumber}
         onPageChange={setPageNumber}
       />
+      <DrawingToolbar />
     </div>
   );
 };
