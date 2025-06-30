@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
 import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
@@ -11,6 +12,7 @@ const Presentation = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
+      <DrawingCanvas />
       <PDFViewer
         pageNumber={pageNumber}
         onLoadTotalPages={setTotalPagesNumber}
