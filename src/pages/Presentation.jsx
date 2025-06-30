@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import ControlToolbar from "@/components/presentation/ControlToolbar";
-import DrawingToolbar from "@/components/presentation/DrawingToolbar";
-import PDFViewer from "@/components/presentation/PDFViewer";
-import SlideNavigation from "@/components/presentation/SlideNavigation";
+import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
+import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
+import PDFViewer from "@/components/presentation/viewer/PDFViewer";
+import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
 
 const Presentation = () => {
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
