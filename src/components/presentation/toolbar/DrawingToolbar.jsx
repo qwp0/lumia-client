@@ -2,12 +2,11 @@ import { useState } from "react";
 
 import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
 import ConfirmModal from "@/components/modal/ConfrmModal";
+import ColorPalette from "@/components/presentation/toolbar/popover/ColorPalette";
+import ShapeSelector from "@/components/presentation/toolbar/popover/ShapeSelector";
+import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
 import { highlighterColors, penColors } from "@/constants/colors";
 import { shapeIconMap } from "@/constants/shape";
-
-import ColorPalette from "./popover/ColorPalette";
-import ShapeSelector from "./popover/ShapeSelector";
-import ToolBarButton from "./ToolBarButton";
 
 const DrawingToolbar = () => {
   const [activeTool, setActiveTool] = useState(null);

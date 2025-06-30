@@ -5,6 +5,7 @@ const ShapeSelector = ({ selectedShape, onSelect }) => {
     <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
       {Object.entries(shapeIconMap).map(([type, Icon]) => (
         <button
+          type="button"
           key={type}
           onClick={() => onSelect(type)}
         >

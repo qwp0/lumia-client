@@ -2,8 +2,7 @@ import { useState } from "react";
 
 import { ExitIcon, LinkIcon } from "@/assets";
 import ConfirmModal from "@/components/modal/ConfrmModal";
-
-import ToolBarButton from "./ToolBarButton";
+import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
 
 const controlTools = [
   { icon: LinkIcon, title: "링크 공유" },

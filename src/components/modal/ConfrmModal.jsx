@@ -19,12 +19,14 @@ const ConfirmModal = ({ isOpen, type, onConfirm, onCancel }) => {
         </div>
         <div className="mt-6 flex justify-center gap-3">
           <button
+            type="button"
             className="btn-confirm"
             onClick={onCancel}
           >
             {cancelText}
           </button>
           <button
+            type="button"
             className="btn-confirm"
             onClick={onConfirm}
           >
