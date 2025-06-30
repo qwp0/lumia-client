@@ -1,4 +1,3 @@
-import ShapeSelector from "@/components/presentation/toolbar/popup//ShapeSelector";
 import ColorPalette from "@/components/presentation/toolbar/popup/ColorPalette";
 import EraserSelector from "@/components/presentation/toolbar/popup/EraserSelector";
 import { HIGHLIGHTER_COLORS, PEN_COLORS } from "@/constants/colors";
@@ -30,8 +29,6 @@ const ToolPopup = ({ activeTool }) => {
           colors={HIGHLIGHTER_COLORS}
         />
       );
-    case TOOL_NAMES.SHAPE:
-      return <ShapeSelector />;
     case TOOL_NAMES.ERASER:
       return <EraserSelector />;
     default:
