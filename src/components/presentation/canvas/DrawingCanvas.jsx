@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { TOOL_NAMES } from "@/constants/tool";
+import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const DrawingCanvas = () => {
@@ -12,6 +12,7 @@ const DrawingCanvas = () => {
   const activeTool = useDrawingStore((state) => state.activeTool);
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
+  const eraserMode = useDrawingStore((state) => state.eraserMode);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -68,12 +69,37 @@ const DrawingCanvas = () => {
     contextRef.current.closePath();
   };
 
+  const erase = (e) => {
+    const ctx = contextRef.current;
+    const size = 40;
+
+    ctx.clearRect(e.clientX - size / 2, e.clientY - size / 2, size, size);
+  };
+
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-10"
-      onMouseDown={startDrawing}
-      onMouseMove={draw}
+      onMouseDown={(e) => {
+        if (
+          activeTool === TOOL_NAMES.ERASER &&
+          eraserMode === ERASER_MODES.PARTIAL
+        ) {
+          setIsDrawing(true);
+        } else {
+          startDrawing(e);
+        }
+      }}
+      onMouseMove={(e) => {
+        if (
+          activeTool === TOOL_NAMES.ERASER &&
+          eraserMode === ERASER_MODES.PARTIAL
+        ) {
+          if (isDrawing) erase(e);
+        } else {
+          draw(e);
+        }
+      }}
       onMouseUp={stopDrawing}
     />
   );
