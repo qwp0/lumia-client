@@ -24,7 +24,7 @@ const DrawingToolbar = () => {
   const [selectedColor, setSelectedColor] = useState("#EB4C60");
 
   const handleToolClick = (toolName) => {
-    setActiveTool(toolName);
+    setActiveTool((prev) => (prev === toolName ? null : toolName));
   };
 
   const isShowColorPalette = activeTool === "펜" || activeTool === "형광펜";
