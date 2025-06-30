@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
+import { highlighterColors, penColors } from "@/constants/colors";
 import { shapeIconMap } from "@/constants/shape";
 
 import ColorPalette from "./popover/ColorPalette";
@@ -9,9 +10,10 @@ import ToolBarButton from "./ToolBarButton";
 
 const DrawingToolbar = () => {
   const [activeTool, setActiveTool] = useState(null);
-  const [selectedPenColor, setSelectedPenColor] = useState("#2E2E2E");
-  const [selectedHighlighterColor, setSelectedHighLighterColor] =
-    useState("#FFF176");
+  const [selectedPenColor, setSelectedPenColor] = useState(penColors[0]);
+  const [selectedHighlighterColor, setSelectedHighLighterColor] = useState(
+    highlighterColors[0],
+  );
   const [selectedShape, setSelectedShape] = useState("circle");
 
   const drawingTools = [
