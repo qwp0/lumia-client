@@ -1,6 +1,6 @@
 import { CircleIcon, LineIcon, SquareIcon } from "@/assets";
 
-export const shapeIconMap = {
+export const SHAPE_ICON_MAP = {
   circle: CircleIcon,
   square: SquareIcon,
   line: LineIcon,

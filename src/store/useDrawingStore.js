@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-import { highlighterColors, penColors } from "@/constants/colors";
+import { HIGHLIGHTER_COLORS, PEN_COLORS } from "@/constants/colors";
 import { ERASER_MODES } from "@/constants/tool";
 
 export const useDrawingStore = create((set, get) => ({
   activeTool: null,
-  penColor: penColors[0],
-  highlighterColor: highlighterColors[0],
+  penColor: PEN_COLORS[0],
+  highlighterColor: HIGHLIGHTER_COLORS[0],
   shape: "circle",
   eraserMode: ERASER_MODES.PARTIAL,
   isDeleteModalOpen: false,

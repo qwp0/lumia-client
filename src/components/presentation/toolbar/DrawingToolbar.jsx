@@ -2,7 +2,7 @@ import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
 import ConfirmModal from "@/components/modal/ConfrmModal";
 import ToolPopup from "@/components/presentation/toolbar/popup/ToolPopup";
 import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
-import { shapeIconMap } from "@/constants/shape";
+import { SHAPE_ICON_MAP } from "@/constants/shape";
 import { TOOL_NAMES } from "@/constants/tool";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
@@ -20,7 +20,7 @@ const DrawingToolbar = () => {
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
     { title: TOOL_NAMES.HIGHLIGHTER, type: "toggle", icon: HighlighterIcon },
     { title: TOOL_NAMES.ERASER, type: "toggle", icon: EraserIcon },
-    { title: TOOL_NAMES.SHAPE, type: "toggle", icon: shapeIconMap[shape] },
+    { title: TOOL_NAMES.SHAPE, type: "toggle", icon: SHAPE_ICON_MAP[shape] },
     { title: TOOL_NAMES.CURSOR, type: "sticky", icon: CursorIcon },
   ];
 

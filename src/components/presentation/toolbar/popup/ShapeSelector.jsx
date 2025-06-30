@@ -1,4 +1,4 @@
-import { shapeIconMap } from "@/constants/shape";
+import { SHAPE_ICON_MAP } from "@/constants/shape";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const ShapeSelector = () => {
@@ -7,7 +7,7 @@ const ShapeSelector = () => {
 
   return (
     <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
-      {Object.entries(shapeIconMap).map(([type, Icon]) => (
+      {Object.entries(SHAPE_ICON_MAP).map(([type, Icon]) => (
         <button
           type="button"
           key={type}
