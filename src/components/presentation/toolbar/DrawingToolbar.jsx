@@ -25,10 +25,8 @@ const DrawingToolbar = () => {
   ];
 
   const handleToolClick = (toolName, type) => {
-    const currentTool = useDrawingStore.getState().activeTool;
-
     if (type === "toggle") {
-      setActiveTool(currentTool === toolName ? null : toolName);
+      setActiveTool(activeTool === toolName ? null : toolName);
     } else if (type === "sticky") {
       setActiveTool(toolName);
     } else if (type === "modal") {
