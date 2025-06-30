@@ -18,17 +18,19 @@ const DrawingToolbar = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const drawingTools = [
-    { icon: PenIcon, title: "펜" },
-    { icon: HighlighterIcon, title: "형광펜" },
-    { icon: EraserIcon, title: "지우개" },
-    { icon: shapeIconMap[selectedShape], title: "도형 그리기" },
-    { icon: CursorIcon, title: "커서" },
+    { title: "펜", type: "toggle", icon: PenIcon },
+    { title: "형광펜", type: "toggle", icon: HighlighterIcon },
+    { title: "지우개", type: "modal", icon: EraserIcon },
+    { title: "도형 그리기", type: "toggle", icon: shapeIconMap[selectedShape] },
+    { title: "커서", type: "sticky", icon: CursorIcon },
   ];
 
-  const handleToolClick = (toolName) => {
-    setActiveTool((prev) => (prev === toolName ? null : toolName));
-
-    if (toolName === "지우개") {
+  const handleToolClick = (toolName, type) => {
+    if (type === "toggle") {
+      setActiveTool((prev) => (prev === toolName ? null : toolName));
+    } else if (type === "sticky") {
+      setActiveTool(toolName);
+    } else if (type === "modal") {
       setIsDeleteModalOpen(true);
     }
   };
@@ -69,7 +71,7 @@ const DrawingToolbar = () => {
           >
             <ToolBarButton
               isActive={tool.title === activeTool}
-              onClick={() => handleToolClick(tool.title)}
+              onClick={() => handleToolClick(tool.title, tool.type)}
               {...tool}
             />
             {tool.title === activeTool && popupComponents[tool.title]}

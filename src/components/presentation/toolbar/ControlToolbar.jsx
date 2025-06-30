@@ -10,13 +10,10 @@ const controlTools = [
 ];
 
 const ControlToolbar = () => {
-  const [activeControl, setActiveControl] = useState(null);
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
 
   const handleToolClick = (toolName) => {
-    setActiveControl(toolName);
-
     if (toolName === "발표 종료") {
       setIsEndPresentationModalOpen(true);
     }
@@ -31,7 +28,6 @@ const ControlToolbar = () => {
         {controlTools.map((tool) => (
           <ToolBarButton
             key={tool.title}
-            isActive={tool.title === activeControl}
             onClick={() => handleToolClick(tool.title)}
             {...tool}
           />
