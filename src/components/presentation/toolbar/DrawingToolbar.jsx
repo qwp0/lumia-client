@@ -14,6 +14,7 @@ const DrawingToolbar = () => {
   const setDeleteModalOpen = useDrawingStore(
     (state) => state.setDeleteModalOpen,
   );
+  const clearCanvas = useDrawingStore((state) => state.clearCanvas);
 
   const drawingTools = [
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
@@ -60,6 +61,7 @@ const DrawingToolbar = () => {
         type="deleteAll"
         onCancel={() => setDeleteModalOpen(false)}
         onConfirm={() => {
+          clearCanvas();
           setDeleteModalOpen(false);
         }}
       />

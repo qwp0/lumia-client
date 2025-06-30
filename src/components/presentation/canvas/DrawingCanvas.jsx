@@ -8,6 +8,7 @@ const DrawingCanvas = () => {
   const contextRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
+  const setCanvasRef = useDrawingStore((state) => state.setCanvasRef);
   const activeTool = useDrawingStore((state) => state.activeTool);
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
@@ -23,6 +24,7 @@ const DrawingCanvas = () => {
     ctx.lineJoin = "round";
 
     contextRef.current = ctx;
+    setCanvasRef(canvas);
   }, []);
 
   const getCurrentStyle = () => {
