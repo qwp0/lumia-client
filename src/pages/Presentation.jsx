@@ -1,7 +1,9 @@
 import { useState } from "react";
 
-import PDFViewer from "@/components/presentation/PDFViewer";
-import SlideNavigation from "@/components/presentation/SlideNavigation";
+import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
+import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
+import PDFViewer from "@/components/presentation/viewer/PDFViewer";
+import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
 
 const Presentation = () => {
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
@@ -18,6 +20,8 @@ const Presentation = () => {
         pageNumber={pageNumber}
         onPageChange={setPageNumber}
       />
+      <DrawingToolbar />
+      <ControlToolbar />
     </div>
   );
 };

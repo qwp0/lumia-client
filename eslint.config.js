@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import importPlugin from "eslint-plugin-import";
+import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
@@ -19,6 +20,7 @@ export default [
       },
     },
     plugins: {
+      "react": reactPlugin,
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       "import": importPlugin,
@@ -42,6 +44,7 @@ export default [
         { blankLine: "any", prev: ["const", "let"], next: ["const", "let"] },
         { blankLine: "always", prev: "*", next: "return" },
       ],
+      "react/jsx-uses-vars": "error",
     },
   },
 ];
