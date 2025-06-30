@@ -1,33 +1,49 @@
 import { useState } from "react";
 
-import {
-  CircleIcon,
-  CursorIcon,
-  EraserIcon,
-  HighlighterIcon,
-  PenIcon,
-} from "@/assets";
+import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
+import { shapeIconMap } from "@/constants/shape";
 
 import ColorPalette from "./popover/ColorPalette";
+import ShapeSelector from "./popover/ShapeSelector";
 import ToolBarButton from "./ToolBarButton";
-
-const drawingTools = [
-  { icon: PenIcon, title: "펜" },
-  { icon: HighlighterIcon, title: "형광펜" },
-  { icon: EraserIcon, title: "지우개" },
-  { icon: CircleIcon, title: "도형 그리기" },
-  { icon: CursorIcon, title: "커서" },
-];
 
 const DrawingToolbar = () => {
   const [activeTool, setActiveTool] = useState(null);
   const [selectedColor, setSelectedColor] = useState("#EB4C60");
+  const [selectedShape, setSelectedShape] = useState("circle");
+
+  const drawingTools = [
+    { icon: PenIcon, title: "펜" },
+    { icon: HighlighterIcon, title: "형광펜" },
+    { icon: EraserIcon, title: "지우개" },
+    { icon: shapeIconMap[selectedShape], title: "도형 그리기" },
+    { icon: CursorIcon, title: "커서" },
+  ];
 
   const handleToolClick = (toolName) => {
     setActiveTool((prev) => (prev === toolName ? null : toolName));
   };
 
-  const isShowColorPalette = activeTool === "펜" || activeTool === "형광펜";
+  const renderPopupByTool = (toolName) => {
+    if (toolName === "펜" || toolName === "형광펜") {
+      return (
+        <ColorPalette
+          selectedColor={selectedColor}
+          onSelect={setSelectedColor}
+          toolName={toolName}
+        />
+      );
+    }
+
+    if (toolName === "도형 그리기") {
+      return (
+        <ShapeSelector
+          selectedShape={selectedShape}
+          onSelect={setSelectedShape}
+        />
+      );
+    }
+  };
 
   return (
     <div
@@ -35,22 +51,18 @@ const DrawingToolbar = () => {
       className="fixed top-3 z-10 flex gap-5 rounded-xl bg-black px-6 py-3"
     >
       {drawingTools.map((tool) => (
-        <ToolBarButton
+        <div
           key={tool.title}
-          isActive={tool.title === activeTool}
-          onClick={() => handleToolClick(tool.title)}
-          {...tool}
-        />
+          className="relative"
+        >
+          <ToolBarButton
+            isActive={tool.title === activeTool}
+            onClick={() => handleToolClick(tool.title)}
+            {...tool}
+          />
+          {tool.title === activeTool && renderPopupByTool(tool.title)}
+        </div>
       ))}
-      {isShowColorPalette && (
-        <ColorPalette
-          selectedColor={selectedColor}
-          onSelect={(color) => {
-            setSelectedColor(color);
-          }}
-          toolName={activeTool}
-        />
-      )}
     </div>
   );
 };

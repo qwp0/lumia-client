@@ -5,7 +5,7 @@ const ColorPalette = ({ onSelect, selectedColor, toolName }) => {
   const colors = toolName === "펜" ? penColors : highlighterColors;
 
   return (
-    <div className="absolute top-full mt-2 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
+    <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
       {colors.map((color) => (
         <button
           key={color}
