@@ -76,30 +76,34 @@ const DrawingCanvas = () => {
     ctx.clearRect(e.clientX - size / 2, e.clientY - size / 2, size, size);
   };
 
+  const handleMouseDown = (e) => {
+    const isPartialEraser =
+      activeTool === TOOL_NAMES.ERASER && eraserMode === ERASER_MODES.PARTIAL;
+
+    if (isPartialEraser) {
+      setIsDrawing(true);
+    } else {
+      startDrawing(e);
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    const isPartialEraser =
+      activeTool === TOOL_NAMES.ERASER && eraserMode === ERASER_MODES.PARTIAL;
+
+    if (isPartialEraser) {
+      if (isDrawing) erase(e);
+    } else {
+      draw(e);
+    }
+  };
+
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-10"
-      onMouseDown={(e) => {
-        if (
-          activeTool === TOOL_NAMES.ERASER &&
-          eraserMode === ERASER_MODES.PARTIAL
-        ) {
-          setIsDrawing(true);
-        } else {
-          startDrawing(e);
-        }
-      }}
-      onMouseMove={(e) => {
-        if (
-          activeTool === TOOL_NAMES.ERASER &&
-          eraserMode === ERASER_MODES.PARTIAL
-        ) {
-          if (isDrawing) erase(e);
-        } else {
-          draw(e);
-        }
-      }}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
       onMouseUp={stopDrawing}
     />
   );
