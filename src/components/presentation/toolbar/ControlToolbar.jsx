@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import { ExitIcon, LinkIcon } from "@/assets";
 import ConfirmModal from "@/components/modal/ConfrmModal";
@@ -16,6 +17,11 @@ const ControlToolbar = () => {
   const handleToolClick = (toolName) => {
     if (toolName === "발표 종료") {
       setIsEndPresentationModalOpen(true);
+    }
+    if (toolName === "링크 공유") {
+      toast.success("링크가 복사되었습니다.", {
+        duration: 1000,
+      });
     }
   };
 
