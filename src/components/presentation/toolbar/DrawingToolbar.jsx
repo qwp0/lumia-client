@@ -19,7 +19,7 @@ const DrawingToolbar = () => {
   const drawingTools = [
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
     { title: TOOL_NAMES.HIGHLIGHTER, type: "toggle", icon: HighlighterIcon },
-    { title: TOOL_NAMES.ERASER, type: "modal", icon: EraserIcon },
+    { title: TOOL_NAMES.ERASER, type: "toggle", icon: EraserIcon },
     { title: TOOL_NAMES.SHAPE, type: "toggle", icon: shapeIconMap[shape] },
     { title: TOOL_NAMES.CURSOR, type: "sticky", icon: CursorIcon },
   ];
@@ -29,8 +29,6 @@ const DrawingToolbar = () => {
       setActiveTool(activeTool === toolName ? null : toolName);
     } else if (type === "sticky") {
       setActiveTool(toolName);
-    } else if (type === "modal") {
-      setDeleteModalOpen(true);
     }
   };
 

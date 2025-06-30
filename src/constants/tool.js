@@ -5,3 +5,8 @@ export const TOOL_NAMES = {
   SHAPE: "도형",
   CURSOR: "커서",
 };
+
+export const ERASER_MODES = {
+  PARTIAL: "partial",
+  ALL: "all",
+};
