@@ -1,17 +1,21 @@
 import { shapeIconMap } from "@/constants/shape";
+import { useDrawingStore } from "@/store/useDrawingStore";
 
-const ShapeSelector = ({ selectedShape, onSelect }) => {
+const ShapeSelector = () => {
+  const shape = useDrawingStore((state) => state.shape);
+  const setShape = useDrawingStore((state) => state.setShape);
+
   return (
     <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
       {Object.entries(shapeIconMap).map(([type, Icon]) => (
         <button
           type="button"
           key={type}
-          onClick={() => onSelect(type)}
+          onClick={() => setShape(type)}
         >
           <Icon
             className={`h-6 w-6 ${
-              selectedShape === type ? "text-[#EB4C60]" : "text-black"
+              shape === type ? "text-[#EB4C60]" : "text-black"
             }`}
           />
         </button>

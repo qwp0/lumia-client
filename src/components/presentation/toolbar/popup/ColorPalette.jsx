@@ -1,8 +1,4 @@
-import { highlighterColors, penColors } from "@/constants/colors";
-
-const ColorPalette = ({ onSelect, selectedColor, toolName }) => {
-  const colors = toolName === "펜" ? penColors : highlighterColors;
-
+const ColorPalette = ({ onSelect, selectedColor, colors }) => {
   return (
     <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
       {colors.map((color) => (

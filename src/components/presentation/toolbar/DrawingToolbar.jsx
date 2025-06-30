@@ -1,61 +1,38 @@
-import { useState } from "react";
-
 import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
 import ConfirmModal from "@/components/modal/ConfrmModal";
-import ColorPalette from "@/components/presentation/toolbar/popover/ColorPalette";
-import ShapeSelector from "@/components/presentation/toolbar/popover/ShapeSelector";
+import ToolPopup from "@/components/presentation/toolbar/popup/ToolPopup";
 import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
-import { highlighterColors, penColors } from "@/constants/colors";
 import { shapeIconMap } from "@/constants/shape";
+import { TOOL_NAMES } from "@/constants/tool";
+import { useDrawingStore } from "@/store/useDrawingStore";
 
 const DrawingToolbar = () => {
-  const [activeTool, setActiveTool] = useState(null);
-  const [selectedPenColor, setSelectedPenColor] = useState(penColors[0]);
-  const [selectedHighlighterColor, setSelectedHighLighterColor] = useState(
-    highlighterColors[0],
+  const activeTool = useDrawingStore((state) => state.activeTool);
+  const setActiveTool = useDrawingStore((state) => state.setActiveTool);
+  const shape = useDrawingStore((state) => state.shape);
+  const isDeleteModalOpen = useDrawingStore((state) => state.isDeleteModalOpen);
+  const setDeleteModalOpen = useDrawingStore(
+    (state) => state.setDeleteModalOpen,
   );
-  const [selectedShape, setSelectedShape] = useState("circle");
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const drawingTools = [
-    { title: "펜", type: "toggle", icon: PenIcon },
-    { title: "형광펜", type: "toggle", icon: HighlighterIcon },
-    { title: "지우개", type: "modal", icon: EraserIcon },
-    { title: "도형 그리기", type: "toggle", icon: shapeIconMap[selectedShape] },
-    { title: "커서", type: "sticky", icon: CursorIcon },
+    { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
+    { title: TOOL_NAMES.HIGHLIGHTER, type: "toggle", icon: HighlighterIcon },
+    { title: TOOL_NAMES.ERASER, type: "modal", icon: EraserIcon },
+    { title: TOOL_NAMES.SHAPE, type: "toggle", icon: shapeIconMap[shape] },
+    { title: TOOL_NAMES.CURSOR, type: "sticky", icon: CursorIcon },
   ];
 
   const handleToolClick = (toolName, type) => {
+    const currentTool = useDrawingStore.getState().activeTool;
+
     if (type === "toggle") {
-      setActiveTool((prev) => (prev === toolName ? null : toolName));
+      setActiveTool(currentTool === toolName ? null : toolName);
     } else if (type === "sticky") {
       setActiveTool(toolName);
     } else if (type === "modal") {
-      setIsDeleteModalOpen(true);
+      setDeleteModalOpen(true);
     }
-  };
-
-  const popupComponents = {
-    "펜": (
-      <ColorPalette
-        selectedColor={selectedPenColor}
-        onSelect={setSelectedPenColor}
-        toolName="펜"
-      />
-    ),
-    "형광펜": (
-      <ColorPalette
-        selectedColor={selectedHighlighterColor}
-        onSelect={setSelectedHighLighterColor}
-        toolName="형광펜"
-      />
-    ),
-    "도형 그리기": (
-      <ShapeSelector
-        selectedShape={selectedShape}
-        onSelect={setSelectedShape}
-      />
-    ),
   };
 
   return (
@@ -74,16 +51,16 @@ const DrawingToolbar = () => {
               onClick={() => handleToolClick(tool.title, tool.type)}
               {...tool}
             />
-            {tool.title === activeTool && popupComponents[tool.title]}
+            {tool.title === activeTool && <ToolPopup activeTool={activeTool} />}
           </div>
         ))}
       </div>
       <ConfirmModal
         isOpen={isDeleteModalOpen}
         type="deleteAll"
-        onCancel={() => setIsDeleteModalOpen(false)}
+        onCancel={() => setDeleteModalOpen(false)}
         onConfirm={() => {
-          setIsDeleteModalOpen(false);
+          setDeleteModalOpen(false);
         }}
       />
     </>
