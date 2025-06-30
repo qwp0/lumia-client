@@ -9,7 +9,9 @@ import ToolBarButton from "./ToolBarButton";
 
 const DrawingToolbar = () => {
   const [activeTool, setActiveTool] = useState(null);
-  const [selectedColor, setSelectedColor] = useState("#EB4C60");
+  const [selectedPenColor, setSelectedPenColor] = useState("#2E2E2E");
+  const [selectedHighlighterColor, setSelectedHighLighterColor] =
+    useState("#FFF176");
   const [selectedShape, setSelectedShape] = useState("circle");
 
   const drawingTools = [
@@ -24,25 +26,27 @@ const DrawingToolbar = () => {
     setActiveTool((prev) => (prev === toolName ? null : toolName));
   };
 
-  const renderPopupByTool = (toolName) => {
-    if (toolName === "펜" || toolName === "형광펜") {
-      return (
-        <ColorPalette
-          selectedColor={selectedColor}
-          onSelect={setSelectedColor}
-          toolName={toolName}
-        />
-      );
-    }
-
-    if (toolName === "도형 그리기") {
-      return (
-        <ShapeSelector
-          selectedShape={selectedShape}
-          onSelect={setSelectedShape}
-        />
-      );
-    }
+  const popupComponents = {
+    "펜": (
+      <ColorPalette
+        selectedColor={selectedPenColor}
+        onSelect={setSelectedPenColor}
+        toolName="펜"
+      />
+    ),
+    "형광펜": (
+      <ColorPalette
+        selectedColor={selectedHighlighterColor}
+        onSelect={setSelectedHighLighterColor}
+        toolName="형광펜"
+      />
+    ),
+    "도형 그리기": (
+      <ShapeSelector
+        selectedShape={selectedShape}
+        onSelect={setSelectedShape}
+      />
+    ),
   };
 
   return (
@@ -60,7 +64,7 @@ const DrawingToolbar = () => {
             onClick={() => handleToolClick(tool.title)}
             {...tool}
           />
-          {tool.title === activeTool && renderPopupByTool(tool.title)}
+          {tool.title === activeTool && popupComponents[tool.title]}
         </div>
       ))}
     </div>
