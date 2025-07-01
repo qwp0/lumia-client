@@ -28,7 +28,8 @@ export const useDrawingStore = create((set, get) => ({
       },
     })),
 
-  clearCurrentPageDrawings: () => {
+  clearCurrentPageCanvas: () => {
+    const canvas = get().canvasRef;
     const page = get().currentPage;
 
     set((state) => ({
@@ -37,9 +38,6 @@ export const useDrawingStore = create((set, get) => ({
         [page]: { drawings: [] },
       },
     }));
-  },
-  clearCanvas: () => {
-    const canvas = get().canvasRef;
 
     if (canvas) {
       const ctx = canvas.getContext("2d");
