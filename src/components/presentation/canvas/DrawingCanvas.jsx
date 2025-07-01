@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
 import { useDrawingStore } from "@/store/useDrawingStore";
+import { getDrawingStyle } from "@/utils/getDrawingStyle";
+import { getPointerPosition } from "@/utils/getPointerPosition";
+import { renderPath } from "@/utils/renderPath";
 
 const DrawingCanvas = () => {
   const canvasRef = useRef(null);
@@ -19,6 +22,8 @@ const DrawingCanvas = () => {
 
   const isPartialEraser =
     activeTool === TOOL_NAMES.ERASER && eraserMode === ERASER_MODES.PARTIAL;
+
+  const style = getDrawingStyle(activeTool, penColor, highlighterColor);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,51 +52,7 @@ const DrawingCanvas = () => {
     drawings.forEach((path) => renderPath(path, ctx));
   }, [currentPage, pageDrawings]);
 
-  const renderPath = (path, ctx) => {
-    if (!path.points.length) return;
-
-    if (path.type === "eraser") {
-      const size = path.size;
-
-      path.points.forEach(({ x, y }) => {
-        ctx.clearRect(x - size / 2, y - size / 2, size, size);
-      });
-
-      return;
-    }
-
-    ctx.beginPath();
-    ctx.strokeStyle = path.color;
-    ctx.lineWidth = path.width;
-    ctx.globalAlpha = path.alpha;
-
-    path.points.forEach(({ x, y }, index) => {
-      index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    });
-
-    ctx.stroke();
-    ctx.closePath();
-  };
-
-  const getPointerPosition = (e) => ({
-    x: e.clientX,
-    y: e.clientY,
-  });
-
-  const getCurrentStyle = () => {
-    if (activeTool === TOOL_NAMES.PEN) {
-      return { color: penColor, width: 2, alpha: 1.0 };
-    }
-    if (activeTool === TOOL_NAMES.HIGHLIGHTER) {
-      return { color: highlighterColor, width: 30, alpha: 0.03 };
-    }
-
-    return null;
-  };
-
   const startDrawing = (e) => {
-    const style = getCurrentStyle();
-
     if (!style) return;
 
     const { x, y } = getPointerPosition(e);
@@ -133,8 +94,6 @@ const DrawingCanvas = () => {
       activeTool === TOOL_NAMES.PEN ||
       activeTool === TOOL_NAMES.HIGHLIGHTER
     ) {
-      const style = getCurrentStyle();
-
       newPath = {
         type: activeTool,
         color: style.color,
