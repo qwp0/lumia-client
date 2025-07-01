@@ -7,12 +7,8 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 
 const DrawingToolbar = () => {
   const activeTool = useDrawingStore((state) => state.activeTool);
-  const setActiveTool = useDrawingStore((state) => state.setActiveTool);
   const isDeleteModalOpen = useDrawingStore((state) => state.isDeleteModalOpen);
-  const setDeleteModalOpen = useDrawingStore(
-    (state) => state.setDeleteModalOpen,
-  );
-  const clearCanvas = useDrawingStore((state) => state.clearCanvas);
+  const { setActiveTool, setDeleteModalOpen, clearCanvas } = useDrawingStore();
 
   const drawingTools = [
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
