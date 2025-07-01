@@ -6,11 +6,8 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 
 const ToolPopup = ({ activeTool }) => {
   const penColor = useDrawingStore((state) => state.penColor);
-  const setPenColor = useDrawingStore((state) => state.setPenColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
-  const setHighlighterColor = useDrawingStore(
-    (state) => state.setHighlighterColor,
-  );
+  const { setPenColor, setHighlighterColor } = useDrawingStore();
 
   switch (activeTool) {
     case TOOL_NAMES.PEN:

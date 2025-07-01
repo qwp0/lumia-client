@@ -8,7 +8,7 @@ const DrawingCanvas = () => {
   const contextRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const setCanvasRef = useDrawingStore((state) => state.setCanvasRef);
+  const { setCanvasRef } = useDrawingStore();
   const activeTool = useDrawingStore((state) => state.activeTool);
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
