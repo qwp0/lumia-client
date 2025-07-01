@@ -34,6 +34,45 @@ const DrawingCanvas = () => {
     setCanvasRef(canvas);
   }, []);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+
+    if (!canvas || !ctx) return;
+
+    const drawings = pageDrawings[currentPage]?.drawings || [];
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawings.forEach((path) => renderPath(path, ctx));
+  }, [currentPage, pageDrawings]);
+
+  const renderPath = (path, ctx) => {
+    if (!path.points.length) return;
+
+    if (path.type === "eraser") {
+      const size = path.size;
+
+      path.points.forEach(({ x, y }) => {
+        ctx.clearRect(x - size / 2, y - size / 2, size, size);
+      });
+
+      return;
+    }
+
+    ctx.beginPath();
+    ctx.strokeStyle = path.color;
+    ctx.lineWidth = path.width;
+    ctx.globalAlpha = path.alpha;
+
+    path.points.forEach(({ x, y }, index) => {
+      index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+
+    ctx.stroke();
+    ctx.closePath();
+  };
+
   const getPointerPosition = (e) => ({
     x: e.clientX,
     y: e.clientY,
@@ -44,7 +83,7 @@ const DrawingCanvas = () => {
       return { color: penColor, width: 2, alpha: 1.0 };
     }
     if (activeTool === TOOL_NAMES.HIGHLIGHTER) {
-      return { color: highlighterColor, width: 30, alpha: 0.05 };
+      return { color: highlighterColor, width: 30, alpha: 0.03 };
     }
 
     return null;
@@ -100,7 +139,7 @@ const DrawingCanvas = () => {
         type: activeTool,
         color: style.color,
         width: style.width,
-        alpha: style.alpha,
+        alpha: activeTool === TOOL_NAMES.HIGHLIGHTER ? 0.3 : style.alpha,
         points: currentPath,
       };
     } else if (isPartialEraser) {
