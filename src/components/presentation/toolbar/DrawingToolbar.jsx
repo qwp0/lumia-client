@@ -8,7 +8,8 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 const DrawingToolbar = () => {
   const activeTool = useDrawingStore((state) => state.activeTool);
   const isDeleteModalOpen = useDrawingStore((state) => state.isDeleteModalOpen);
-  const { setActiveTool, setDeleteModalOpen, clearCanvas } = useDrawingStore();
+  const { setActiveTool, setDeleteModalOpen, clearCurrentPageCanvas } =
+    useDrawingStore();
 
   const drawingTools = [
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
@@ -50,7 +51,7 @@ const DrawingToolbar = () => {
         type="deleteAll"
         onCancel={() => setDeleteModalOpen(false)}
         onConfirm={() => {
-          clearCanvas();
+          clearCurrentPageCanvas();
           setDeleteModalOpen(false);
         }}
       />

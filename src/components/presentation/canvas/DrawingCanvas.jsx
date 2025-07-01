@@ -1,110 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
+import { useCanvasDrawing } from "@/hooks/useCanvasDrawing";
+import { useCanvasSetup } from "@/hooks/useCanvasSetup";
 import { useDrawingStore } from "@/store/useDrawingStore";
+import { renderPath } from "@/utils/renderPath";
 
 const DrawingCanvas = () => {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
-  const [isDrawing, setIsDrawing] = useState(false);
 
-  const { setCanvasRef } = useDrawingStore();
-  const activeTool = useDrawingStore((state) => state.activeTool);
-  const penColor = useDrawingStore((state) => state.penColor);
-  const highlighterColor = useDrawingStore((state) => state.highlighterColor);
-  const eraserMode = useDrawingStore((state) => state.eraserMode);
+  const currentPage = useDrawingStore((state) => state.currentPage);
+  const pageDrawings = useDrawingStore((state) => state.pageDrawings);
+
+  const { onCanvasPointerDown, onCanvasPointerMove, onCanvasPointerUp } =
+    useCanvasDrawing(contextRef);
+
+  useCanvasSetup(canvasRef, contextRef);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    contextRef.current = ctx;
-    setCanvasRef(canvas);
-  }, []);
-
-  const getCurrentStyle = () => {
-    if (activeTool === TOOL_NAMES.PEN) {
-      return { color: penColor, width: 2, alpha: 1.0 };
-    }
-    if (activeTool === TOOL_NAMES.HIGHLIGHTER) {
-      return { color: highlighterColor, width: 30, alpha: 0.05 };
-    }
-
-    return null;
-  };
-
-  const startDrawing = (e) => {
-    const style = getCurrentStyle();
-
-    if (!style) return;
-
     const ctx = contextRef.current;
 
-    ctx.strokeStyle = style.color;
-    ctx.lineWidth = style.width;
-    ctx.globalAlpha = style.alpha;
+    if (!canvas || !ctx) return;
 
-    ctx.beginPath();
-    ctx.moveTo(e.clientX, e.clientY);
-    setIsDrawing(true);
-  };
+    const drawings = pageDrawings[currentPage]?.drawings || [];
 
-  const draw = (e) => {
-    if (!isDrawing) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const ctx = contextRef.current;
-
-    ctx.lineTo(e.clientX, e.clientY);
-    ctx.stroke();
-  };
-
-  const stopDrawing = () => {
-    setIsDrawing(false);
-    contextRef.current.closePath();
-  };
-
-  const erase = (e) => {
-    const ctx = contextRef.current;
-    const size = 40;
-
-    ctx.clearRect(e.clientX - size / 2, e.clientY - size / 2, size, size);
-  };
-
-  const handleMouseDown = (e) => {
-    const isPartialEraser =
-      activeTool === TOOL_NAMES.ERASER && eraserMode === ERASER_MODES.PARTIAL;
-
-    if (isPartialEraser) {
-      setIsDrawing(true);
-    } else {
-      startDrawing(e);
-    }
-  };
-
-  const handleMouseMove = (e) => {
-    const isPartialEraser =
-      activeTool === TOOL_NAMES.ERASER && eraserMode === ERASER_MODES.PARTIAL;
-
-    if (isPartialEraser) {
-      if (isDrawing) erase(e);
-    } else {
-      draw(e);
-    }
-  };
+    drawings.forEach((path) => renderPath(path, ctx));
+  }, [currentPage, pageDrawings]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-10"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={stopDrawing}
+      onMouseDown={onCanvasPointerDown}
+      onMouseMove={onCanvasPointerMove}
+      onMouseUp={onCanvasPointerUp}
     />
   );
 };

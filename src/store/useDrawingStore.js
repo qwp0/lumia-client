@@ -10,6 +10,8 @@ export const useDrawingStore = create((set, get) => ({
   eraserMode: ERASER_MODES.PARTIAL,
   isDeleteModalOpen: false,
   canvasRef: null,
+  currentPage: 1,
+  pageDrawings: {},
 
   setActiveTool: (activeTool) => set({ activeTool }),
   setPenColor: (color) => set({ penColor: color }),
@@ -17,9 +19,25 @@ export const useDrawingStore = create((set, get) => ({
   setEraserMode: (mode) => set({ eraserMode: mode }),
   setDeleteModalOpen: (isOpen) => set({ isDeleteModalOpen: isOpen }),
   setCanvasRef: (ref) => set({ canvasRef: ref }),
+  setCurrentPage: (page) => set({ currentPage: page }),
+  setPageDrawings: (pageNumber, drawings) =>
+    set((state) => ({
+      pageDrawings: {
+        ...state.pageDrawings,
+        [pageNumber]: drawings,
+      },
+    })),
 
-  clearCanvas: () => {
+  clearCurrentPageCanvas: () => {
     const canvas = get().canvasRef;
+    const page = get().currentPage;
+
+    set((state) => ({
+      pageDrawings: {
+        ...state.pageDrawings,
+        [page]: { drawings: [] },
+      },
+    }));
 
     if (canvas) {
       const ctx = canvas.getContext("2d");
