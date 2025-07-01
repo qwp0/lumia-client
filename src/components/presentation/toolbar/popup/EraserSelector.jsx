@@ -4,10 +4,7 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 
 const EraserSelector = () => {
   const eraserMode = useDrawingStore((state) => state.eraserMode);
-  const setEraserMode = useDrawingStore((state) => state.setEraserMode);
-  const setDeleteModalOpen = useDrawingStore(
-    (state) => state.setDeleteModalOpen,
-  );
+  const { setEraserMode, setDeleteModalOpen } = useDrawingStore();
 
   const handleSelect = (mode) => {
     if (mode === ERASER_MODES.PARTIAL) {
