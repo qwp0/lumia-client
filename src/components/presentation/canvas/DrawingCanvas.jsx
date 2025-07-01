@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
+import { useCanvasSetup } from "@/hooks/useCanvasSetup";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { getDrawingStyle } from "@/utils/getDrawingStyle";
 import { getPointerPosition } from "@/utils/getPointerPosition";
@@ -12,7 +13,7 @@ const DrawingCanvas = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentPath, setCurrentPath] = useState([]);
 
-  const { setCanvasRef, setPageDrawings } = useDrawingStore();
+  const { setPageDrawings } = useDrawingStore();
   const activeTool = useDrawingStore((state) => state.activeTool);
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
@@ -25,19 +26,7 @@ const DrawingCanvas = () => {
 
   const style = getDrawingStyle(activeTool, penColor, highlighterColor);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    contextRef.current = ctx;
-    setCanvasRef(canvas);
-  }, []);
+  useCanvasSetup(canvasRef, contextRef);
 
   useEffect(() => {
     const canvas = canvasRef.current;
