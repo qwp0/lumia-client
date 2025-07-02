@@ -6,7 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({ pageNumber, onLoadTotalPages }) => {
+const PDFViewer = ({ file, pageNumber, onLoadTotalPages }) => {
   const height = window.innerHeight;
 
   const options = useMemo(
@@ -23,7 +23,7 @@ const PDFViewer = ({ pageNumber, onLoadTotalPages }) => {
 
   return (
     <Document
-      file="sample.pdf"
+      file={file}
       onLoadSuccess={handleLoadSuccess}
       options={options}
     >

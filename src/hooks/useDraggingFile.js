@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const useDraggingFile = () => {
   const [isDragging, setIsDragging] = useState(false);
+  const [droppedFile, setDroppedFile] = useState(null);
   const dragCounter = useRef(0);
 
   useEffect(() => {
@@ -23,6 +24,12 @@ export const useDraggingFile = () => {
       e.preventDefault();
       dragCounter.current = 0;
       setIsDragging(false);
+
+      const file = e.dataTransfer.files[0];
+
+      if (file) {
+        setDroppedFile(file);
+      }
     };
 
     const handleDragOver = (e) => {
@@ -42,5 +49,5 @@ export const useDraggingFile = () => {
     };
   }, []);
 
-  return isDragging;
+  return { isDragging, droppedFile };
 };

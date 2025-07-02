@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
@@ -9,6 +10,9 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
+  const location = useLocation();
+  const slideUrl = location.state.url;
+
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
@@ -16,6 +20,7 @@ const Presentation = () => {
     <div className="flex h-screen w-screen items-center justify-center">
       <DrawingCanvas />
       <PDFViewer
+        file={slideUrl}
         pageNumber={currentPage}
         onLoadTotalPages={setTotalPagesNumber}
       />
