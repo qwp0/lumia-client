@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { postSlidesUpload } from "@/api/postSlidesUpload";
 import DragOverlay from "@/components/home/DragOverlay";
 import Header from "@/components/home/Header";
@@ -6,10 +8,14 @@ import Uploader from "@/components/home/Uploader";
 import { useDraggingFile } from "@/hooks/useDraggingFile";
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { isDragging, droppedFile } = useDraggingFile();
 
   const handleUpload = async (file) => {
+    setIsLoading(true);
     const url = await postSlidesUpload(file);
+
+    setIsLoading(false);
 
     if (url) {
       console.log("업로드 성공:", url);
@@ -24,6 +30,7 @@ const Home = () => {
         <Uploader
           onUpload={handleUpload}
           droppedFile={droppedFile}
+          isLoading={isLoading}
         />
       </div>
       {isDragging && <DragOverlay />}
