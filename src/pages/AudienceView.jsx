@@ -1,9 +1,12 @@
-import { useParams } from "react-router-dom";
+import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 
 const AudienceView = () => {
-  const { roomId } = useParams();
-
-  return <div>청중 방! Room ID: {roomId}</div>;
+  return (
+    <AudienceEnterModal
+      isOpen={true}
+      onConfirm={(name) => console.log(name)}
+    />
+  );
 };
 
 export default AudienceView;
