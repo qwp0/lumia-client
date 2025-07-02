@@ -1,13 +1,27 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { FileUploadIcon } from "@/assets";
 
-const Uploader = () => {
+const Uploader = ({ onUpload, droppedFile }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
     fileInputRef.current.click();
   };
+
+  const handleChange = async (e) => {
+    const file = e.target.files?.[0];
+
+    e.target.value = null;
+
+    if (file) {
+      await onUpload(file);
+    }
+  };
+
+  useEffect(() => {
+    if (droppedFile) onUpload(droppedFile);
+  }, [droppedFile]);
 
   return (
     <section
@@ -19,6 +33,7 @@ const Uploader = () => {
         type="file"
         accept=".pdf"
         ref={fileInputRef}
+        onChange={handleChange}
         className="hidden"
       />
       <p>여기에 발표 자료를 드래그하거나 클릭해서 업로드하세요.</p>
