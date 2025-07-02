@@ -10,7 +10,7 @@ const controlTools = [
   { icon: ExitIcon, title: "발표 종료" },
 ];
 
-const ControlToolbar = () => {
+const ControlToolbar = ({ roomId }) => {
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
 
@@ -19,8 +19,12 @@ const ControlToolbar = () => {
       setIsEndPresentationModalOpen(true);
     }
     if (toolName === "링크 공유") {
-      toast.success("링크가 복사되었습니다.", {
-        duration: 1000,
+      const audienceLink = `${window.location.origin}/audience/${roomId}`;
+
+      navigator.clipboard.writeText(audienceLink).then(() => {
+        toast.success("링크가 복사되었습니다.", {
+          duration: 1000,
+        });
       });
     }
   };

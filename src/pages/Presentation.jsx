@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
@@ -10,8 +10,9 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
+  const { roomId } = useParams();
   const location = useLocation();
-  const slideUrl = location.state.url;
+  const slideUrl = location.state.slideUrl;
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
@@ -30,7 +31,7 @@ const Presentation = () => {
         onPageChange={setCurrentPage}
       />
       <DrawingToolbar />
-      <ControlToolbar />
+      <ControlToolbar roomId={roomId} />
     </div>
   );
 };
