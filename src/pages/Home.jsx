@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { postSlidesUpload } from "@/api/postSlidesUpload";
 import DragOverlay from "@/components/home/DragOverlay";
@@ -9,6 +10,8 @@ import { useDraggingFile } from "@/hooks/useDraggingFile";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
   const { isDragging, droppedFile } = useDraggingFile();
 
   const handleUpload = async (file) => {
@@ -18,7 +21,7 @@ const Home = () => {
     setIsLoading(false);
 
     if (url) {
-      console.log("업로드 성공:", url);
+      navigate("/presentation", { state: { url } });
     }
   };
 
