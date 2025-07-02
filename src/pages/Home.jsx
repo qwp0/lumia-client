@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { postCreateRoom } from "@/api/postCreateRoom";
 import { postSlidesUpload } from "@/api/postSlidesUpload";
 import DragOverlay from "@/components/home/DragOverlay";
 import Header from "@/components/home/Header";
@@ -16,12 +17,23 @@ const Home = () => {
 
   const handleUpload = async (file) => {
     setIsLoading(true);
-    const url = await postSlidesUpload(file);
 
-    setIsLoading(false);
+    try {
+      const slideUrl = await postSlidesUpload(file);
 
-    if (url) {
-      navigate("/presentation", { state: { url } });
+      if (!slideUrl) return;
+
+      const roomId = await postCreateRoom(slideUrl);
+
+      if (roomId) {
+        navigate(`/presentation/${roomId}`, {
+          state: { slideUrl },
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
