@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export const useDraggingFile = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -27,8 +28,12 @@ export const useDraggingFile = () => {
 
       const file = e.dataTransfer.files[0];
 
-      if (file) {
+      if (file && file.type === "application/pdf") {
         setDroppedFile(file);
+      } else {
+        toast.error("pdf 파일만 업로드할 수 있습니다.", {
+          duration: 1000,
+        });
       }
     };
 
