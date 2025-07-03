@@ -27,7 +27,7 @@ export const useDraggingFile = () => {
 
       const file = e.dataTransfer.files[0];
 
-      if (file) {
+      if (file && file.type === "application/pdf") {
         setDroppedFile(file);
       }
     };
