@@ -3,16 +3,12 @@ import { createPortal } from "react-dom";
 
 import logoImage from "@/assets/images/lumia-logo.png";
 
-const AudienceEnterModal = ({ isOpen, onConfirm }) => {
+const AudienceEnterModal = ({ isOpen, onJoin }) => {
   const [name, setName] = useState("");
   const modalRoot = document.getElementById("modal-root");
   const isDisabled = !name.trim();
 
   if (!isOpen) return null;
-
-  const handleClick = () => {
-    onConfirm(name.trim());
-  };
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#08090A]">
@@ -39,7 +35,7 @@ const AudienceEnterModal = ({ isOpen, onConfirm }) => {
         <hr className="mt-3 w-full border-gray-200" />
         <button
           type="button"
-          onClick={handleClick}
+          onClick={() => onJoin(name)}
           disabled={isDisabled}
           className={`mt-3 w-full rounded-md px-4 py-2 text-sm font-bold transition-colors ${
             isDisabled
