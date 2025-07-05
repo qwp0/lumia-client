@@ -15,6 +15,7 @@ import HighlighterIcon from "@/assets/icons/highlighter.svg?react ";
 import LineIcon from "@/assets/icons/line.svg?react";
 import LinkIcon from "@/assets/icons/link.svg?react";
 import PenIcon from "@/assets/icons/pen.svg?react";
+import PresentationIcon from "@/assets/icons/presentation.svg?react";
 import SquareIcon from "@/assets/icons/square.svg?react";
 import TrashCanIcon from "@/assets/icons/trash-can.svg?react";
 
@@ -36,6 +37,7 @@ export {
   LineIcon,
   LinkIcon,
   PenIcon,
+  PresentationIcon,
   SquareIcon,
   TrashCanIcon,
 };
