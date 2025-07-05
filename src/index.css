@@ -13,3 +13,11 @@ button {
 .btn-confirm {
   @apply w-full rounded-lg px-4 py-2 font-semibold bg-gray-100 text-gray-800 hover:bg-[#EB4C60] hover:text-white transition;
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
