@@ -12,7 +12,9 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 const Audience = () => {
   const { roomId } = useParams();
 
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(() => {
+    return localStorage.getItem("audience_nickname") || "";
+  });
   const [slideUrl, setSlideUrl] = useState("");
   const [totalPages, setTotalPages] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -22,8 +24,15 @@ const Audience = () => {
 
   const handleJoin = (nickname) => {
     setNickname(nickname);
+    localStorage.setItem("audience_nickname", nickname);
     joinRoom(socket, roomId, nickname);
   };
+
+  useEffect(() => {
+    if (nickname) {
+      joinRoom(socket, roomId, nickname);
+    }
+  }, [nickname, roomId]);
 
   useEffect(() => {
     socket.on("init_room", ({ slideUrl }) => {
