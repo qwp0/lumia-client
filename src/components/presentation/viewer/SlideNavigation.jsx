@@ -10,7 +10,7 @@ const SlideNavigation = ({ pageNumber, totalPagesNumber, onPageChange }) => {
   };
 
   return (
-    <div className="fixed bottom-3 z-10 flex gap-5 rounded-4xl bg-black p-2 text-white">
+    <div className="fixed bottom-6 z-10 flex gap-5 rounded-4xl bg-black p-2 text-white">
       <button
         type="button"
         onClick={goToPrevPage}
