@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import PresenterFollowToggle from "@/components/audience/PresenterFollowToggle";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
-import { joinRoom } from "@/socket/events";
-import socket from "@/socket/socket";
+import { useAudienceJoin } from "@/hooks/useAudienceJoin";
+import { useRoomSlideUrl } from "@/hooks/useRoomSlideUrl";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Audience = () => {
   const { roomId } = useParams();
-
-  const [nickname, setNickname] = useState(() => {
-    return localStorage.getItem("audience_nickname") || "";
-  });
   const [slideUrl, setSlideUrl] = useState("");
   const [totalPages, setTotalPages] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -22,27 +18,9 @@ const Audience = () => {
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
-  const handleJoin = (nickname) => {
-    setNickname(nickname);
-    localStorage.setItem("audience_nickname", nickname);
-    joinRoom(socket, roomId, nickname);
-  };
+  const { nickname, handleJoin } = useAudienceJoin(roomId);
 
-  useEffect(() => {
-    if (nickname) {
-      joinRoom(socket, roomId, nickname);
-    }
-  }, [nickname, roomId]);
-
-  useEffect(() => {
-    socket.on("init_room", ({ slideUrl }) => {
-      setSlideUrl(slideUrl);
-    });
-
-    return () => {
-      socket.off("init_room");
-    };
-  }, []);
+  useRoomSlideUrl(setSlideUrl);
 
   if (!nickname) {
     return (
