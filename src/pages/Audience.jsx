@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import ChatPanel from "@/components/audience/chat/ChatPanel";
 import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
-import PresenterFollowToggle from "@/components/audience/PresenterFollowToggle";
+import PresenterFollowToggleButton from "@/components/audience/PresenterFollowToggleButton";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
@@ -65,7 +65,7 @@ const Audience = () => {
           onPageChange={setCurrentPage}
         />
       )}
-      <PresenterFollowToggle
+      <PresenterFollowToggleButton
         isFollowing={isFollowing}
         onToggleFollow={() => setIsFollowing((prev) => !prev)}
       />

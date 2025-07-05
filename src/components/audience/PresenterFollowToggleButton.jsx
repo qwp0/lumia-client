@@ -1,6 +1,6 @@
 import { PresentationIcon } from "@/assets";
 
-const PresenterFollowToggle = ({ isFollowing, onToggleFollow }) => {
+const PresenterFollowToggleButton = ({ isFollowing, onToggleFollow }) => {
   return (
     <button
       type="button"
@@ -15,4 +15,4 @@ const PresenterFollowToggle = ({ isFollowing, onToggleFollow }) => {
   );
 };
 
-export default PresenterFollowToggle;
+export default PresenterFollowToggleButton;
