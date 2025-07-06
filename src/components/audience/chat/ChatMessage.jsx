@@ -1,4 +1,8 @@
 const ChatMessage = ({ message }) => {
+  const { nickname, role, text, time } = message;
+
+  const isHost = role === "host";
+
   const getColorFromNickname = (nickname) => {
     const colors = [
       "bg-purple-500",
@@ -12,22 +16,20 @@ const ChatMessage = ({ message }) => {
 
     return colors[index];
   };
-  const color = getColorFromNickname(message.nickname);
+  const profileColor = isHost ? "bg-black" : getColorFromNickname(nickname);
 
   return (
     <li className="flex items-start gap-3">
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-md ${color}`}
+        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-md ${profileColor}`}
       >
-        {message.nickname.charAt(0)}
+        {nickname.charAt(0)}
       </div>
       <div className="flex flex-col">
-        <div className="text-sm font-medium text-zinc-800">
-          {message.nickname}
-        </div>
-        <div className="mb-1 text-xs text-zinc-400">{message.time}</div>
-        <div className="max-w-[260px] rounded-lg bg-zinc-100 px-4 py-2 text-sm text-zinc-800">
-          {message.text}
+        <div className="text-sm font-medium text-zinc-800">{nickname}</div>
+        <div className="mb-1 text-xs text-zinc-400">{time}</div>
+        <div className="max-w-[260px] rounded-lg bg-zinc-100 px-4 py-2 text-sm break-words text-zinc-800">
+          {text}
         </div>
       </div>
     </li>

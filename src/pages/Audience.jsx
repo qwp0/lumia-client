@@ -7,8 +7,9 @@ import PresenterFollowToggleButton from "@/components/audience/PresenterFollowTo
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
-import { useAudienceJoin } from "@/hooks/useAudienceJoin";
-import { useRoomSlideUrl } from "@/hooks/useRoomSlideUrl";
+import { useChat } from "@/hooks/useChat";
+import { useRoomInit } from "@/hooks/useRoomInit";
+import { useRoomJoin } from "@/hooks/useRoomJoin";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Audience = () => {
@@ -17,30 +18,19 @@ const Audience = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([]);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
-  const { nickname, handleJoin } = useAudienceJoin(roomId);
+  const { nickname, handleJoin } = useRoomJoin(roomId);
+  const role = "audience";
+  const { chatMessages, handleSendChat, setChatMessages } = useChat({
+    roomId,
+    nickname,
+    role,
+  });
 
-  const handleSendChat = (text) => {
-    const now = new Date();
-    const formattedTime = now.toLocaleTimeString("ko-KR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    const newMessage = {
-      nickname,
-      time: formattedTime,
-      text,
-    };
-
-    setChatMessages((prev) => [...prev, newMessage]);
-  };
-
-  useRoomSlideUrl(setSlideUrl);
+  useRoomInit({ setSlideUrl, setChatMessages });
 
   if (!nickname) {
     return (
@@ -73,7 +63,7 @@ const Audience = () => {
 
       {isChatOpen && (
         <ChatPanel
-          messages={chatMessages}
+          messages={chatMessages[currentPage] || []}
           onSend={handleSendChat}
           onClose={() => setIsChatOpen(false)}
         />
