@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import ChatPanel from "@/components/audience/chat/ChatPanel";
@@ -8,6 +8,7 @@ import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
 import { useChat } from "@/hooks/useChat";
+import { useCursorTracking } from "@/hooks/useCursorTracking";
 import { useRoomInit } from "@/hooks/useRoomInit";
 import { useRoomJoin } from "@/hooks/useRoomJoin";
 import { useDrawingStore } from "@/store/useDrawingStore";
@@ -18,6 +19,7 @@ const Audience = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const viewRef = useRef(null);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
@@ -31,6 +33,7 @@ const Audience = () => {
   });
 
   useRoomInit({ setSlideUrl, setChatMessages });
+  useCursorTracking({ viewRef, roomId, nickname, page: currentPage });
 
   if (!nickname) {
     return (
@@ -43,11 +46,13 @@ const Audience = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <PDFViewer
-        file={slideUrl}
-        pageNumber={currentPage}
-        onLoadTotalPages={setTotalPages}
-      />
+      <div ref={viewRef}>
+        <PDFViewer
+          file={slideUrl}
+          pageNumber={currentPage}
+          onLoadTotalPages={setTotalPages}
+        />
+      </div>
       {!isFollowing && (
         <SlideNavigation
           totalPagesNumber={totalPages}
