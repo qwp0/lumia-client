@@ -1,21 +1,10 @@
+import { getColorFromNickname } from "@/utils/getColorFromNickname";
+
 const ChatMessage = ({ message }) => {
   const { nickname, role, text, time } = message;
 
   const isHost = role === "host";
 
-  const getColorFromNickname = (nickname) => {
-    const colors = [
-      "bg-purple-500",
-      "bg-blue-500",
-      "bg-green-500",
-      "bg-pink-500",
-      "bg-yellow-500",
-      "bg-red-500",
-    ];
-    const index = nickname.charCodeAt(0) % colors.length;
-
-    return colors[index];
-  };
   const profileColor = isHost ? "bg-black" : getColorFromNickname(nickname);
 
   return (
