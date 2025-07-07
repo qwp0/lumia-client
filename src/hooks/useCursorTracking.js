@@ -2,9 +2,17 @@ import { useEffect } from "react";
 
 import { sendCursorPosition } from "@/socket/events";
 
-export const useCursorTracking = ({ viewRef, roomId, nickname, page }) => {
+export const useCursorTracking = ({
+  viewRef,
+  roomId,
+  nickname,
+  page,
+  isCursorSharing,
+}) => {
   useEffect(() => {
     const handleMouseMove = (e) => {
+      if (!isCursorSharing) return;
+
       const rect = viewRef.current?.getBoundingClientRect();
 
       if (!rect) return;
@@ -28,5 +36,5 @@ export const useCursorTracking = ({ viewRef, roomId, nickname, page }) => {
 
     return () =>
       viewerElement.removeEventListener("mousemove", handleMouseMove);
-  }, [viewRef, roomId, page, nickname]);
+  }, [viewRef, roomId, page, nickname, isCursorSharing]);
 };

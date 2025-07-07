@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import ChatPanel from "@/components/audience/chat/ChatPanel";
 import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
-import PresenterFollowToggleButton from "@/components/audience/PresenterFollowToggleButton";
+import ToggleStatusButton from "@/components/audience/ToggleStatusButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
@@ -21,6 +21,7 @@ const Audience = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const viewRef = useRef(null);
+  const [isCursorSharing, setIsCursorSharing] = useState(true);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
@@ -34,7 +35,13 @@ const Audience = () => {
   });
 
   useRoomInit({ setSlideUrl, setChatMessages });
-  useCursorTracking({ viewRef, roomId, nickname, page: currentPage });
+  useCursorTracking({
+    viewRef,
+    roomId,
+    nickname,
+    page: currentPage,
+    isCursorSharing,
+  });
 
   if (!nickname) {
     return (
@@ -62,12 +69,19 @@ const Audience = () => {
           onPageChange={setCurrentPage}
         />
       )}
-      <PresenterFollowToggleButton
-        isFollowing={isFollowing}
-        onToggleFollow={() => setIsFollowing((prev) => !prev)}
-      />
+      <div className="absolute top-4 right-4 z-50 flex gap-2">
+        <ToggleStatusButton
+          label="발표 흐름 따라가기"
+          isActive={isFollowing}
+          onToggle={() => setIsFollowing((prev) => !prev)}
+        />
+        <ToggleStatusButton
+          label="커서 공유"
+          isActive={isCursorSharing}
+          onToggle={() => setIsCursorSharing((prev) => !prev)}
+        />
+      </div>
       <ChatToggleButton onClick={() => setIsChatOpen((prev) => !prev)} />
-
       {isChatOpen && (
         <ChatPanel
           messages={chatMessages[currentPage] || []}
