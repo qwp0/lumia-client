@@ -1,6 +1,7 @@
 const ToggleStatusButton = ({ label, isActive, onToggle }) => {
   return (
     <button
+      type="button"
       onClick={onToggle}
       className="flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2 text-sm font-medium shadow-lg backdrop-blur transition-colors duration-200 hover:bg-white"
     >
