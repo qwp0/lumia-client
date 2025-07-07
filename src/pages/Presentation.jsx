@@ -3,6 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import ChatPanel from "@/components/audience/chat/ChatPanel";
 import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
+import CursorOverlay from "@/components/common/CursorOverlay";
 import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
 import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
@@ -44,6 +45,7 @@ const Presentation = () => {
         pageNumber={currentPage}
         onLoadTotalPages={setTotalPagesNumber}
       />
+      <CursorOverlay currentPage={currentPage} />
       <SlideNavigation
         totalPagesNumber={totalPagesNumber}
         pageNumber={currentPage}
