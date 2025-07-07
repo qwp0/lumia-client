@@ -9,6 +9,16 @@ export const useCursorOverlay = (currentPage) => {
     const handleCursor = ({ x, y, page, nickname }) => {
       if (page !== currentPage) return;
 
+      const isOutOfBounds = x < 0 || y < 0;
+
+      if (isOutOfBounds) {
+        setCursors((prevCursors) =>
+          prevCursors.filter((cursor) => cursor.nickname !== nickname),
+        );
+
+        return;
+      }
+
       setCursors((prevCursors) => {
         const nextCursors = [...prevCursors];
         const targetCursor = nextCursors.find(

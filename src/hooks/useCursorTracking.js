@@ -22,6 +22,9 @@ export const useCursorTracking = ({ viewRef, roomId, nickname, page }) => {
     if (!viewerElement) return;
 
     viewerElement.addEventListener("mousemove", handleMouseMove);
+    viewerElement.addEventListener("mouseleave", () => {
+      sendCursorPosition({ roomId, page, x: -1, y: -1, nickname });
+    });
 
     return () =>
       viewerElement.removeEventListener("mousemove", handleMouseMove);
