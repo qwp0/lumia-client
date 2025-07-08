@@ -3,13 +3,15 @@ import ConfirmModal from "@/components/modal/ConfrmModal";
 import ToolPopup from "@/components/presentation/toolbar/popup/ToolPopup";
 import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
 import { TOOL_NAMES } from "@/constants/tool";
+import { sendDrawData } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-const DrawingToolbar = () => {
+const DrawingToolbar = ({ roomId }) => {
   const activeTool = useDrawingStore((state) => state.activeTool);
   const isDeleteModalOpen = useDrawingStore((state) => state.isDeleteModalOpen);
   const { setActiveTool, setDeleteModalOpen, clearCurrentPageCanvas } =
     useDrawingStore();
+  const currentPage = useDrawingStore((state) => state.currentPage);
 
   const drawingTools = [
     { title: TOOL_NAMES.PEN, type: "toggle", icon: PenIcon },
@@ -52,6 +54,7 @@ const DrawingToolbar = () => {
         onCancel={() => setDeleteModalOpen(false)}
         onConfirm={() => {
           clearCurrentPageCanvas();
+          sendDrawData({ roomId, page: currentPage, drawings: [] });
           setDeleteModalOpen(false);
         }}
       />

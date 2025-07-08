@@ -25,3 +25,7 @@ export const sendSlideChange = ({ roomId, page }) => {
 export const getCurrentPage = ({ roomId }) => {
   socket.emit("current-page", roomId);
 };
+
+export const sendDrawData = ({ roomId, page, drawings }) => {
+  socket.emit("draw-data", { roomId, page, drawings });
+};

@@ -5,7 +5,7 @@ import { useCanvasSetup } from "@/hooks/useCanvasSetup";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { renderPath } from "@/utils/renderPath";
 
-const DrawingCanvas = () => {
+const DrawingCanvas = ({ roomId, isDrawable }) => {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -13,9 +13,17 @@ const DrawingCanvas = () => {
   const pageDrawings = useDrawingStore((state) => state.pageDrawings);
 
   const { onCanvasPointerDown, onCanvasPointerMove, onCanvasPointerUp } =
-    useCanvasDrawing(contextRef);
+    useCanvasDrawing(contextRef, roomId);
 
   useCanvasSetup(canvasRef, contextRef);
+
+  const eventHandlers = isDrawable
+    ? {
+        onMouseDown: onCanvasPointerDown,
+        onMouseMove: onCanvasPointerMove,
+        onMouseUp: onCanvasPointerUp,
+      }
+    : {};
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -26,7 +34,6 @@ const DrawingCanvas = () => {
     const drawings = pageDrawings[currentPage]?.drawings || [];
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     drawings.forEach((path) => renderPath(path, ctx));
   }, [currentPage, pageDrawings]);
 
@@ -34,9 +41,7 @@ const DrawingCanvas = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-10"
-      onMouseDown={onCanvasPointerDown}
-      onMouseMove={onCanvasPointerMove}
-      onMouseUp={onCanvasPointerUp}
+      {...eventHandlers}
     />
   );
 };
