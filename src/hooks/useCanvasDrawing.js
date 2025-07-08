@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
+import { sendDrawData } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { getDrawingStyle } from "@/utils/getDrawingStyle";
 import { getPointerPosition } from "@/utils/getPointerPosition";
 
-export const useCanvasDrawing = (contextRef) => {
+export const useCanvasDrawing = (contextRef, roomId) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentPath, setCurrentPath] = useState([]);
 
@@ -91,9 +92,13 @@ export const useCanvasDrawing = (contextRef) => {
     if (newPath) {
       const existing = pageDrawings[currentPage]?.drawings || [];
 
-      setPageDrawings(currentPage, {
-        drawings: [...existing, newPath],
-      });
+      const updatedDrawings = [...existing, newPath];
+
+      setPageDrawings(currentPage, { drawings: updatedDrawings });
+
+      if (roomId) {
+        sendDrawData({ roomId, page: currentPage, drawings: updatedDrawings });
+      }
     }
 
     setCurrentPath([]);
