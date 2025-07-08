@@ -8,6 +8,7 @@ import CursorOverlay from "@/components/common/CursorOverlay";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
+import { useAudienceSlideSync } from "@/hooks/useAudienceSlideSync";
 import { useChat } from "@/hooks/useChat";
 import { useCursorTracking } from "@/hooks/useCursorTracking";
 import { useRoomInit } from "@/hooks/useRoomInit";
@@ -34,7 +35,7 @@ const Audience = () => {
     role,
   });
 
-  useRoomInit({ setSlideUrl, setChatMessages });
+  useRoomInit({ setSlideUrl, setChatMessages, setCurrentPage });
   useCursorTracking({
     viewRef,
     roomId,
@@ -42,6 +43,8 @@ const Audience = () => {
     page: currentPage,
     isCursorSharing,
   });
+
+  useAudienceSlideSync(isFollowing, roomId);
 
   if (!nickname) {
     return (

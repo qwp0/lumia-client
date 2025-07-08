@@ -21,3 +21,7 @@ export const sendCursorPosition = ({ roomId, page, x, y, nickname }) => {
 export const sendSlideChange = ({ roomId, page }) => {
   socket.emit("slide-change", { roomId, page });
 };
+
+export const getCurrentPage = ({ roomId }) => {
+  socket.emit("current-page", roomId);
+};
