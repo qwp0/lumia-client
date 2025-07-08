@@ -3,6 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import ChatPanel from "@/components/audience/chat/ChatPanel";
 import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
+import ToggleStatusButton from "@/components/audience/ToggleStatusButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
 import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
@@ -20,6 +21,7 @@ const Presentation = () => {
   const location = useLocation();
   const slideUrl = location.state.slideUrl;
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isAudienceCursorVisible, setIsAudienceCursorVisible] = useState(true);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
@@ -45,7 +47,7 @@ const Presentation = () => {
         pageNumber={currentPage}
         onLoadTotalPages={setTotalPagesNumber}
       />
-      <CursorOverlay currentPage={currentPage} />
+      {isAudienceCursorVisible && <CursorOverlay currentPage={currentPage} />}
       <SlideNavigation
         totalPagesNumber={totalPagesNumber}
         pageNumber={currentPage}
@@ -53,8 +55,14 @@ const Presentation = () => {
       />
       <DrawingToolbar />
       <ControlToolbar roomId={roomId} />
+      <div className="fixed top-20 right-3 z-10">
+        <ToggleStatusButton
+          label="참여자 커서 보기"
+          isActive={isAudienceCursorVisible}
+          onToggle={() => setIsAudienceCursorVisible((prev) => !prev)}
+        />
+      </div>
       <ChatToggleButton onClick={() => setIsChatOpen((prev) => !prev)} />
-
       {isChatOpen && (
         <ChatPanel
           messages={chatMessages[currentPage] || []}
