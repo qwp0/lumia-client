@@ -29,12 +29,18 @@ export const useCursorTracking = ({
 
     if (!viewerElement) return;
 
+    viewerElement.style.cursor = isCursorSharing
+      ? 'url("/cursors/cursor-share.png") 4 4, auto'
+      : "default";
+
     viewerElement.addEventListener("mousemove", handleMouseMove);
     viewerElement.addEventListener("mouseleave", () => {
       sendCursorPosition({ roomId, page, x: -1, y: -1, nickname });
     });
 
-    return () =>
+    return () => {
       viewerElement.removeEventListener("mousemove", handleMouseMove);
+      viewerElement.style.cursor = "default";
+    };
   }, [viewRef, roomId, page, nickname, isCursorSharing]);
 };
