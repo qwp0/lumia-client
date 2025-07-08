@@ -41,7 +41,10 @@ const Presentation = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <DrawingCanvas />
+      <DrawingCanvas
+        roomId={roomId}
+        isDrawable={true}
+      />
       <PDFViewer
         file={slideUrl}
         pageNumber={currentPage}
@@ -55,7 +58,7 @@ const Presentation = () => {
         roomId={roomId}
         role={role}
       />
-      <DrawingToolbar />
+      <DrawingToolbar roomId={roomId} />
       <ControlToolbar roomId={roomId} />
       <div className="fixed top-20 right-3 z-10">
         <ToggleStatusButton

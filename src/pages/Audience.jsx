@@ -6,11 +6,13 @@ import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
 import ToggleStatusButton from "@/components/audience/ToggleStatusButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
+import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
 import PDFViewer from "@/components/presentation/viewer/PDFViewer";
 import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
 import { useAudienceSlideSync } from "@/hooks/useAudienceSlideSync";
 import { useChat } from "@/hooks/useChat";
 import { useCursorTracking } from "@/hooks/useCursorTracking";
+import { useReceiveDrawData } from "@/hooks/useReceiveDrawData";
 import { useRoomInit } from "@/hooks/useRoomInit";
 import { useRoomJoin } from "@/hooks/useRoomJoin";
 import { useDrawingStore } from "@/store/useDrawingStore";
@@ -19,10 +21,11 @@ const Audience = () => {
   const { roomId } = useParams();
   const [slideUrl, setSlideUrl] = useState("");
   const [totalPages, setTotalPages] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const viewRef = useRef(null);
   const [isCursorSharing, setIsCursorSharing] = useState(true);
+
+  const viewRef = useRef(null);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
@@ -45,6 +48,7 @@ const Audience = () => {
   });
 
   useAudienceSlideSync(isFollowing, roomId);
+  useReceiveDrawData();
 
   if (!nickname) {
     return (
@@ -57,6 +61,10 @@ const Audience = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
+      <DrawingCanvas
+        roomId={roomId}
+        isDrawable={false}
+      />
       <div ref={viewRef}>
         <PDFViewer
           file={slideUrl}
