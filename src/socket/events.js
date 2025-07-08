@@ -17,3 +17,7 @@ export const sendTextFeedback = ({ roomId, page, nickname, role, message }) => {
 export const sendCursorPosition = ({ roomId, page, x, y, nickname }) => {
   socket.emit("cursor-move", { roomId, page, x, y, nickname });
 };
+
+export const sendSlideChange = ({ roomId, page }) => {
+  socket.emit("slide-change", { roomId, page });
+};
