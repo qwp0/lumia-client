@@ -1,12 +1,25 @@
 import { ArrowLeft, ArrowRight } from "@/assets";
+import { sendSlideChange } from "@/socket/events";
 
-const SlideNavigation = ({ pageNumber, totalPagesNumber, onPageChange }) => {
+const SlideNavigation = ({
+  pageNumber,
+  totalPagesNumber,
+  onPageChange,
+  roomId,
+  role,
+}) => {
   const goToPrevPage = () => {
-    onPageChange(pageNumber - 1);
+    const newPage = pageNumber - 1;
+
+    onPageChange(newPage);
+    role === "host" && sendSlideChange({ roomId, page: newPage });
   };
 
   const goToNextPage = () => {
-    onPageChange(pageNumber + 1);
+    const newPage = pageNumber + 1;
+
+    onPageChange(newPage);
+    role === "host" && sendSlideChange({ roomId, page: newPage });
   };
 
   return (
