@@ -35,7 +35,7 @@ const Audience = () => {
     role,
   });
 
-  useRoomInit({ setSlideUrl, setChatMessages });
+  useRoomInit({ setSlideUrl, setChatMessages, setCurrentPage });
   useCursorTracking({
     viewRef,
     roomId,
