@@ -67,6 +67,8 @@ const Audience = () => {
           totalPagesNumber={totalPages}
           pageNumber={currentPage}
           onPageChange={setCurrentPage}
+          roomId={roomId}
+          role={role}
         />
       )}
       <div className="absolute top-4 right-4 z-50 flex gap-2">

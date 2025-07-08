@@ -52,6 +52,8 @@ const Presentation = () => {
         totalPagesNumber={totalPagesNumber}
         pageNumber={currentPage}
         onPageChange={setCurrentPage}
+        roomId={roomId}
+        role={role}
       />
       <DrawingToolbar />
       <ControlToolbar roomId={roomId} />
