@@ -47,7 +47,7 @@ const Presentation = () => {
         pageNumber={currentPage}
         onLoadTotalPages={setTotalPagesNumber}
       />
-      <CursorOverlay currentPage={currentPage} />
+      {isAudienceCursorVisible && <CursorOverlay currentPage={currentPage} />}
       <SlideNavigation
         totalPagesNumber={totalPagesNumber}
         pageNumber={currentPage}
