@@ -1,7 +1,7 @@
 import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
+import ToolBarButton from "@/components/common/button/ToolBarButton";
 import ConfirmModal from "@/components/modal/ConfrmModal";
-import ToolPopup from "@/components/presentation/toolbar/popup/ToolPopup";
-import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
+import ToolPopupController from "@/components/presentation/toolbar/toolSettings/ToolPopupController";
 import { TOOL_NAMES } from "@/constants/tool";
 import { sendDrawData } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
@@ -44,7 +44,9 @@ const DrawingToolbar = ({ roomId }) => {
               onClick={() => handleToolClick(tool.title, tool.type)}
               {...tool}
             />
-            {tool.title === activeTool && <ToolPopup activeTool={activeTool} />}
+            {tool.title === activeTool && (
+              <ToolPopupController activeTool={activeTool} />
+            )}
           </div>
         ))}
       </div>

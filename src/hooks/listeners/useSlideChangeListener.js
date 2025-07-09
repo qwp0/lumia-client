@@ -4,7 +4,7 @@ import { getCurrentPage } from "@/socket/events";
 import socket from "@/socket/socket";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-export const useAudienceSlideSync = (isFollowing, roomId) => {
+export const useSlideChangeListener = (isFollowing, roomId) => {
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
   useEffect(() => {

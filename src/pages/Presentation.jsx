@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
-import ChatPanel from "@/components/audience/chat/ChatPanel";
-import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
-import ToggleStatusButton from "@/components/audience/ToggleStatusButton";
+import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
+import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
+import ChatPanel from "@/components/common/chat/ChatPanel";
+import ChatToggleButton from "@/components/common/chat/ChatToggleButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
-import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
+import PDFViewer from "@/components/common/viewer/PDFViewer";
+import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
 import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
-import PDFViewer from "@/components/presentation/viewer/PDFViewer";
-import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
-import { useChat } from "@/hooks/useChat";
-import { useRoomInit } from "@/hooks/useRoomInit";
-import { useRoomJoin } from "@/hooks/useRoomJoin";
+import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
+import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
+import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
@@ -27,14 +27,15 @@ const Presentation = () => {
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
   const role = "host";
-  const { nickname } = useRoomJoin(roomId, "Host");
-  const { chatMessages, handleSendChat, setChatMessages } = useChat({
-    roomId,
-    nickname,
-    role,
-  });
+  const { nickname } = useEmitRoomJoin(roomId, "Host");
+  const { chatMessages, handleSendChat, setChatMessages } =
+    useTextFeedbackListener({
+      roomId,
+      nickname,
+      role,
+    });
 
-  useRoomInit({
+  useRoomInitListener({
     setChatMessages,
     setCurrentPage,
     setPageDrawings,

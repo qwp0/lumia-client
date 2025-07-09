@@ -4,7 +4,7 @@ import { sendTextFeedback } from "@/socket/events";
 import socket from "@/socket/socket";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-export const useChat = ({ roomId, nickname, role }) => {
+export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
   const [chatMessages, setChatMessages] = useState({});
   const currentPage = useDrawingStore((state) => state.currentPage);
 
