@@ -9,12 +9,12 @@ import CursorOverlay from "@/components/common/CursorOverlay";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
-import { useAudienceSlideSync } from "@/hooks/useAudienceSlideSync";
-import { useChat } from "@/hooks/useChat";
-import { useCursorTracking } from "@/hooks/useCursorTracking";
-import { useReceiveDrawData } from "@/hooks/useReceiveDrawData";
-import { useRoomInit } from "@/hooks/useRoomInit";
-import { useRoomJoin } from "@/hooks/useRoomJoin";
+import { useDrawDataListener } from "@/hooks/useDrawDataListener";
+import { useEmitCursorMove } from "@/hooks/useEmitCursorMove";
+import { useEmitRoomJoin } from "@/hooks/useEmitRoomJoin";
+import { useRoomInitListener } from "@/hooks/useRoomInitListener";
+import { useSlideChangeListener } from "@/hooks/useSlideChangeListener";
+import { useTextFeedbackListener } from "@/hooks/useTextFeedbackListener";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Audience = () => {
@@ -30,21 +30,22 @@ const Audience = () => {
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
-  const { nickname, handleJoin } = useRoomJoin(roomId);
+  const { nickname, handleJoin } = useEmitRoomJoin(roomId);
   const role = "audience";
-  const { chatMessages, handleSendChat, setChatMessages } = useChat({
-    roomId,
-    nickname,
-    role,
-  });
+  const { chatMessages, handleSendChat, setChatMessages } =
+    useTextFeedbackListener({
+      roomId,
+      nickname,
+      role,
+    });
 
-  useRoomInit({
+  useRoomInitListener({
     setSlideUrl,
     setChatMessages,
     setCurrentPage,
     setPageDrawings,
   });
-  useCursorTracking({
+  useEmitCursorMove({
     viewRef,
     roomId,
     nickname,
@@ -52,8 +53,8 @@ const Audience = () => {
     isCursorSharing,
   });
 
-  useAudienceSlideSync(isFollowing, roomId);
-  useReceiveDrawData();
+  useSlideChangeListener(isFollowing, roomId);
+  useDrawDataListener();
 
   if (!nickname) {
     return (

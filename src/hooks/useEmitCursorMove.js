@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { sendCursorPosition } from "@/socket/events";
 
-export const useCursorTracking = ({
+export const useEmitCursorMove = ({
   viewRef,
   roomId,
   nickname,

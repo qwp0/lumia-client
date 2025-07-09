@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import socket from "@/socket/socket";
 
-export const useRoomInit = ({
+export const useRoomInitListener = ({
   setSlideUrl,
   setChatMessages,
   setCurrentPage,

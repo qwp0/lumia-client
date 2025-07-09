@@ -1,8 +1,8 @@
-import { useCursorOverlay } from "@/hooks/useCursorOverlay";
+import { useCursorMoveListener } from "@/hooks/useCursorMoveListener";
 import { getColorFromNickname } from "@/utils/getColorFromNickname";
 
 const CursorOverlay = ({ currentPage }) => {
-  const cursors = useCursorOverlay(currentPage);
+  const cursors = useCursorMoveListener(currentPage);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-50">

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import socket from "@/socket/socket";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-export const useReceiveDrawData = () => {
+export const useDrawDataListener = () => {
   const setPageDrawings = useDrawingStore((state) => state.setPageDrawings);
 
   useEffect(() => {

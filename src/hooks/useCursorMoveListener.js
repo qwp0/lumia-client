@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import socket from "@/socket/socket";
 
-export const useCursorOverlay = (currentPage) => {
+export const useCursorMoveListener = (currentPage) => {
   const [cursors, setCursors] = useState([]);
 
   useEffect(() => {

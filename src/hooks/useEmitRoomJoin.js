@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { joinRoom } from "@/socket/events";
 
-export const useRoomJoin = (roomId, defaultNickname) => {
+export const useEmitRoomJoin = (roomId, defaultNickname) => {
   const nicknameKey =
     defaultNickname === "Host" ? "host_nickname" : "audience_nickname";
 
