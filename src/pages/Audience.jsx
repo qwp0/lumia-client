@@ -9,12 +9,12 @@ import CursorOverlay from "@/components/common/CursorOverlay";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
-import { useDrawDataListener } from "@/hooks/useDrawDataListener";
-import { useEmitCursorMove } from "@/hooks/useEmitCursorMove";
-import { useEmitRoomJoin } from "@/hooks/useEmitRoomJoin";
-import { useRoomInitListener } from "@/hooks/useRoomInitListener";
-import { useSlideChangeListener } from "@/hooks/useSlideChangeListener";
-import { useTextFeedbackListener } from "@/hooks/useTextFeedbackListener";
+import { useEmitCursorMove } from "@/hooks/emitters/useEmitCursorMove";
+import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
+import { useDrawDataListener } from "@/hooks/listeners/useDrawDataListener";
+import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
+import { useSlideChangeListener } from "@/hooks/listeners/useSlideChangeListener";
+import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Audience = () => {

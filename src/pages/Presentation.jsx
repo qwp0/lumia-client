@@ -10,9 +10,9 @@ import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
 import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
-import { useEmitRoomJoin } from "@/hooks/useEmitRoomJoin";
-import { useRoomInitListener } from "@/hooks/useRoomInitListener";
-import { useTextFeedbackListener } from "@/hooks/useTextFeedbackListener";
+import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
+import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
+import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {

@@ -1,4 +1,4 @@
-import { useCursorMoveListener } from "@/hooks/useCursorMoveListener";
+import { useCursorMoveListener } from "@/hooks/listeners/useCursorMoveListener";
 import { getColorFromNickname } from "@/utils/getColorFromNickname";
 
 const CursorOverlay = ({ currentPage }) => {
