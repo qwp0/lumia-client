@@ -66,11 +66,11 @@ const Audience = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <DrawingCanvas
-        roomId={roomId}
-        isDrawable={false}
-      />
       <div ref={viewRef}>
+        <DrawingCanvas
+          roomId={roomId}
+          isDrawable={false}
+        />
         <PDFViewer
           file={slideUrl}
           pageNumber={currentPage}
