@@ -28,7 +28,7 @@ const Audience = () => {
   const viewRef = useRef(null);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
-  const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
+  const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
   const { nickname, handleJoin } = useRoomJoin(roomId);
   const role = "audience";
@@ -38,7 +38,12 @@ const Audience = () => {
     role,
   });
 
-  useRoomInit({ setSlideUrl, setChatMessages, setCurrentPage });
+  useRoomInit({
+    setSlideUrl,
+    setChatMessages,
+    setCurrentPage,
+    setPageDrawings,
+  });
   useCursorTracking({
     viewRef,
     roomId,
@@ -61,11 +66,11 @@ const Audience = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <DrawingCanvas
-        roomId={roomId}
-        isDrawable={false}
-      />
       <div ref={viewRef}>
+        <DrawingCanvas
+          roomId={roomId}
+          isDrawable={false}
+        />
         <PDFViewer
           file={slideUrl}
           pageNumber={currentPage}

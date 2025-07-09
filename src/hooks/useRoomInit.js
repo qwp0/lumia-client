@@ -6,12 +6,19 @@ export const useRoomInit = ({
   setSlideUrl,
   setChatMessages,
   setCurrentPage,
+  setPageDrawings,
 }) => {
   useEffect(() => {
-    const handleInit = ({ slideUrl, currentPage, feedbacks }) => {
+    const handleInit = ({ slideUrl, currentPage, feedbacks, drawings }) => {
       setSlideUrl?.(slideUrl);
-      setCurrentPage?.(currentPage);
-      setChatMessages?.(feedbacks || []);
+      setCurrentPage(currentPage);
+      setChatMessages(feedbacks || []);
+
+      if (drawings) {
+        Object.entries(drawings).forEach(([page, value]) => {
+          setPageDrawings(Number(page), value);
+        });
+      }
     };
 
     socket.on("init_room", handleInit);
@@ -19,5 +26,5 @@ export const useRoomInit = ({
     return () => {
       socket.off("init_room", handleInit);
     };
-  }, [setSlideUrl, setCurrentPage, setChatMessages]);
+  }, [setSlideUrl, setCurrentPage, setChatMessages, setPageDrawings]);
 };

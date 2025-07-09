@@ -24,7 +24,7 @@ const Presentation = () => {
   const [isAudienceCursorVisible, setIsAudienceCursorVisible] = useState(true);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
-  const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
+  const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
   const role = "host";
   const { nickname } = useRoomJoin(roomId, "Host");
@@ -37,6 +37,7 @@ const Presentation = () => {
   useRoomInit({
     setChatMessages,
     setCurrentPage,
+    setPageDrawings,
   });
 
   return (
