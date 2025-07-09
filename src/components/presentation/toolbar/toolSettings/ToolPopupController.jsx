@@ -1,10 +1,10 @@
-import ColorPalette from "@/components/presentation/toolbar/popup/ColorPalette";
-import EraserSelector from "@/components/presentation/toolbar/popup/EraserSelector";
+import ColorPalette from "@/components/presentation/toolbar/toolSettings/ColorPalette";
+import EraserSelector from "@/components/presentation/toolbar/toolSettings/EraserSelector";
 import { HIGHLIGHTER_COLORS, PEN_COLORS } from "@/constants/colors";
 import { TOOL_NAMES } from "@/constants/tool";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-const ToolPopup = ({ activeTool }) => {
+const ToolPopuController = ({ activeTool }) => {
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
   const { setPenColor, setHighlighterColor } = useDrawingStore();
@@ -33,4 +33,4 @@ const ToolPopup = ({ activeTool }) => {
   }
 };
 
-export default ToolPopup;
+export default ToolPopuController;

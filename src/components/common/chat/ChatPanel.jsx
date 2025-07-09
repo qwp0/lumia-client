@@ -1,7 +1,6 @@
 import { CloseIcon } from "@/assets";
-import ChatMessage from "@/components/audience/chat/ChatMessage";
-
-import ChatInputForm from "./ChatInputForm";
+import ChatInputForm from "@/components/common/chat/ChatInputForm";
+import ChatMessage from "@/components/common/chat/ChatMessage";
 
 const ChatPanel = ({ messages, onClose, onSend }) => {
   return (

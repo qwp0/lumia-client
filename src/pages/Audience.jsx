@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ChatPanel from "@/components/audience/chat/ChatPanel";
-import ChatToggleButton from "@/components/audience/chat/ChatToggleButton";
-import ToggleStatusButton from "@/components/audience/ToggleStatusButton";
+import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
+import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
+import ChatPanel from "@/components/common/chat/ChatPanel";
+import ChatToggleButton from "@/components/common/chat/ChatToggleButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
+import PDFViewer from "@/components/common/viewer/PDFViewer";
+import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
-import DrawingCanvas from "@/components/presentation/canvas/DrawingCanvas";
-import PDFViewer from "@/components/presentation/viewer/PDFViewer";
-import SlideNavigation from "@/components/presentation/viewer/SlideNavigation";
 import { useAudienceSlideSync } from "@/hooks/useAudienceSlideSync";
 import { useChat } from "@/hooks/useChat";
 import { useCursorTracking } from "@/hooks/useCursorTracking";

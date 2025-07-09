@@ -2,8 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { ExitIcon, LinkIcon } from "@/assets";
+import ToolBarButton from "@/components/common/button/ToolBarButton";
 import ConfirmModal from "@/components/modal/ConfrmModal";
-import ToolBarButton from "@/components/presentation/toolbar/ToolBarButton";
 
 const controlTools = [
   { icon: LinkIcon, title: "링크 공유" },
