@@ -3,10 +3,11 @@ import { useState } from "react";
 import { ERASER_MODES, TOOL_NAMES } from "@/constants/tool";
 import { sendDrawData } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
+import { getCanvasPointerPosition } from "@/utils/getCanvasPointerPosition";
 import { getDrawingStyle } from "@/utils/getDrawingStyle";
-import { getPointerPosition } from "@/utils/getPointerPosition";
+import { getNormalizedPointerPosition } from "@/utils/getNormalizedPointerPosition";
 
-export const useCanvasDrawing = (contextRef, roomId) => {
+export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentPath, setCurrentPath] = useState([]);
 
@@ -26,7 +27,12 @@ export const useCanvasDrawing = (contextRef, roomId) => {
   const startDrawing = (e) => {
     if (!style) return;
 
-    const { x, y } = getPointerPosition(e);
+    const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
+    const { canvasX, canvasY } = getCanvasPointerPosition(
+      x,
+      y,
+      canvasRef.current,
+    );
     const ctx = contextRef.current;
 
     ctx.strokeStyle = style.color;
@@ -34,7 +40,7 @@ export const useCanvasDrawing = (contextRef, roomId) => {
     ctx.globalAlpha = style.alpha;
 
     ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.moveTo(canvasX, canvasY);
 
     setCurrentPath([{ x, y }]);
     setIsDrawing(true);
@@ -43,21 +49,31 @@ export const useCanvasDrawing = (contextRef, roomId) => {
   const draw = (e) => {
     if (!isDrawing) return;
 
-    const { x, y } = getPointerPosition(e);
+    const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
+    const { canvasX, canvasY } = getCanvasPointerPosition(
+      x,
+      y,
+      canvasRef.current,
+    );
     const ctx = contextRef.current;
 
-    ctx.lineTo(x, y);
+    ctx.lineTo(canvasX, canvasY);
     ctx.stroke();
 
     setCurrentPath((prev) => [...prev, { x, y }]);
   };
 
   const erase = (e) => {
-    const { x, y } = getPointerPosition(e);
+    const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
+    const { canvasX, canvasY } = getCanvasPointerPosition(
+      x,
+      y,
+      canvasRef.current,
+    );
     const ctx = contextRef.current;
     const size = 40;
 
-    ctx.clearRect(x - size / 2, y - size / 2, size, size);
+    ctx.clearRect(canvasX - size / 2, canvasY - size / 2, size, size);
     setCurrentPath((prev) => [...prev, { x, y }]);
   };
 
@@ -91,7 +107,6 @@ export const useCanvasDrawing = (contextRef, roomId) => {
 
     if (newPath) {
       const existing = pageDrawings[currentPage]?.drawings || [];
-
       const updatedDrawings = [...existing, newPath];
 
       setPageDrawings(currentPage, { drawings: updatedDrawings });
@@ -106,7 +121,7 @@ export const useCanvasDrawing = (contextRef, roomId) => {
 
   const onCanvasPointerDown = (e) => {
     if (isPartialEraser) {
-      const { x, y } = getPointerPosition(e);
+      const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
 
       setCurrentPath([{ x, y }]);
       setIsDrawing(true);
@@ -117,12 +132,7 @@ export const useCanvasDrawing = (contextRef, roomId) => {
 
   const onCanvasPointerMove = (e) => {
     if (!isDrawing) return;
-
-    if (isPartialEraser) {
-      erase(e);
-    } else {
-      draw(e);
-    }
+    isPartialEraser ? erase(e) : draw(e);
   };
 
   return {
