@@ -6,9 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({ file, pageNumber, onLoadTotalPages }) => {
-  const height = window.innerHeight;
-
+const PDFViewer = ({ file, pageNumber, onLoadTotalPages, width }) => {
   const options = useMemo(
     () => ({
       cMapUrl: "/cmaps/",
@@ -29,7 +27,7 @@ const PDFViewer = ({ file, pageNumber, onLoadTotalPages }) => {
     >
       <Page
         pageNumber={pageNumber}
-        height={height}
+        width={width}
       />
     </Document>
   );
