@@ -12,10 +12,9 @@ const DrawingCanvas = ({ roomId, isDrawable, containerSize }) => {
   const currentPage = useDrawingStore((state) => state.currentPage);
   const pageDrawings = useDrawingStore((state) => state.pageDrawings);
 
-  const { onCanvasPointerDown, onCanvasPointerMove, onCanvasPointerUp } =
-    useCanvasDrawing(contextRef, roomId);
-
   useCanvasSetup(canvasRef, contextRef, containerSize);
+  const { onCanvasPointerDown, onCanvasPointerMove, onCanvasPointerUp } =
+    useCanvasDrawing(contextRef, canvasRef, roomId);
 
   const eventHandlers = isDrawable
     ? {
@@ -34,8 +33,10 @@ const DrawingCanvas = ({ roomId, isDrawable, containerSize }) => {
     const drawings = pageDrawings[currentPage]?.drawings || [];
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawings.forEach((path) => renderPath(path, ctx));
-  }, [currentPage, pageDrawings]);
+    drawings.forEach((path) =>
+      renderPath(path, ctx, canvas.width, canvas.height),
+    );
+  }, [currentPage, pageDrawings, containerSize]);
 
   return (
     <canvas
