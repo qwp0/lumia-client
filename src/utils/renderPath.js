@@ -1,11 +1,14 @@
-export const renderPath = (path, ctx) => {
+export const renderPath = (path, ctx, canvasWidth, canvasHeight) => {
   if (!path.points.length) return;
 
   if (path.type === "eraser") {
     const size = path.size;
 
     path.points.forEach(({ x, y }) => {
-      ctx.clearRect(x - size / 2, y - size / 2, size, size);
+      const canvasX = x * canvasWidth;
+      const canvasY = y * canvasHeight;
+
+      ctx.clearRect(canvasX - size / 2, canvasY - size / 2, size, size);
     });
 
     return;
@@ -17,7 +20,10 @@ export const renderPath = (path, ctx) => {
   ctx.globalAlpha = path.alpha;
 
   path.points.forEach(({ x, y }, index) => {
-    index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    const canvasX = x * canvasWidth;
+    const canvasY = y * canvasHeight;
+
+    index === 0 ? ctx.moveTo(canvasX, canvasY) : ctx.lineTo(canvasX, canvasY);
   });
 
   ctx.stroke();
