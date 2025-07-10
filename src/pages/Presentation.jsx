@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
@@ -13,15 +13,20 @@ import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
 import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
+import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
-  const [totalPagesNumber, setTotalPagesNumber] = useState(null);
   const { roomId } = useParams();
   const location = useLocation();
   const slideUrl = location.state.slideUrl;
+
+  const [totalPagesNumber, setTotalPagesNumber] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isAudienceCursorVisible, setIsAudienceCursorVisible] = useState(true);
+
+  const viewRef = useRef(null);
+  const containerSize = useResizeObserver(viewRef);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
@@ -43,16 +48,24 @@ const Presentation = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <DrawingCanvas
-        roomId={roomId}
-        isDrawable={true}
-      />
-      <PDFViewer
-        file={slideUrl}
-        pageNumber={currentPage}
-        onLoadTotalPages={setTotalPagesNumber}
-      />
-      {isAudienceCursorVisible && <CursorOverlay currentPage={currentPage} />}
+      <div
+        ref={viewRef}
+        className="relative w-full max-w-[90vw]"
+      >
+        <DrawingCanvas
+          roomId={roomId}
+          isDrawable={true}
+          containerSize={containerSize}
+        />
+        <PDFViewer
+          file={slideUrl}
+          pageNumber={currentPage}
+          onLoadTotalPages={setTotalPagesNumber}
+          width={containerSize.width}
+        />
+        {isAudienceCursorVisible && <CursorOverlay currentPage={currentPage} />}
+      </div>
+
       <SlideNavigation
         totalPagesNumber={totalPagesNumber}
         pageNumber={currentPage}

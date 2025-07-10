@@ -5,7 +5,7 @@ import { useCanvasSetup } from "@/hooks/useCanvasSetup";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { renderPath } from "@/utils/renderPath";
 
-const DrawingCanvas = ({ roomId, isDrawable }) => {
+const DrawingCanvas = ({ roomId, isDrawable, containerSize }) => {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -15,7 +15,7 @@ const DrawingCanvas = ({ roomId, isDrawable }) => {
   const { onCanvasPointerDown, onCanvasPointerMove, onCanvasPointerUp } =
     useCanvasDrawing(contextRef, roomId);
 
-  useCanvasSetup(canvasRef, contextRef);
+  useCanvasSetup(canvasRef, contextRef, containerSize);
 
   const eventHandlers = isDrawable
     ? {
@@ -40,7 +40,7 @@ const DrawingCanvas = ({ roomId, isDrawable }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-10"
+      className="absolute top-0 left-0 z-10"
       {...eventHandlers}
     />
   );

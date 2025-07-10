@@ -15,6 +15,7 @@ import { useDrawDataListener } from "@/hooks/listeners/useDrawDataListener";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useSlideChangeListener } from "@/hooks/listeners/useSlideChangeListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
+import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Audience = () => {
@@ -26,6 +27,7 @@ const Audience = () => {
   const [isCursorSharing, setIsCursorSharing] = useState(true);
 
   const viewRef = useRef(null);
+  const containerSize = useResizeObserver(viewRef);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
@@ -33,11 +35,7 @@ const Audience = () => {
   const { nickname, handleJoin } = useEmitRoomJoin(roomId);
   const role = "audience";
   const { chatMessages, handleSendChat, setChatMessages } =
-    useTextFeedbackListener({
-      roomId,
-      nickname,
-      role,
-    });
+    useTextFeedbackListener({ roomId, nickname, role });
 
   useRoomInitListener({
     setSlideUrl,
@@ -45,6 +43,7 @@ const Audience = () => {
     setCurrentPage,
     setPageDrawings,
   });
+
   useEmitCursorMove({
     viewRef,
     roomId,
@@ -67,15 +66,20 @@ const Audience = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <div ref={viewRef}>
+      <div
+        ref={viewRef}
+        className="relative w-full max-w-[90vw]"
+      >
         <DrawingCanvas
           roomId={roomId}
           isDrawable={false}
+          containerSize={containerSize}
         />
         <PDFViewer
           file={slideUrl}
           pageNumber={currentPage}
           onLoadTotalPages={setTotalPages}
+          width={containerSize.width}
         />
         <CursorOverlay currentPage={currentPage} />
       </div>
