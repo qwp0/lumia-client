@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
 import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
 import ChatPanel from "@/components/common/chat/ChatPanel";
 import ChatToggleButton from "@/components/common/chat/ChatToggleButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
+import DownloadProgress from "@/components/common/DownloadProgress";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
@@ -23,24 +24,39 @@ import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
 const Audience = () => {
   const { roomId } = useParams();
+  const viewRef = useRef(null);
+  const navigate = useNavigate();
+
   const [slideUrl, setSlideUrl] = useState("");
   const [totalPages, setTotalPages] = useState(null);
   const [isFollowing, setIsFollowing] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCursorSharing, setIsCursorSharing] = useState(true);
-
-  const viewRef = useRef(null);
-  const containerSize = useResizeObserver(viewRef);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
+  const handleDownload = async () => {
+    setIsDownloadModalOpen(false);
+    setIsDownloading(true);
+
+    await downloadCapturedPdf({
+      pageCount: totalPages,
+      setPage: setCurrentPage,
+    });
+
+    setIsDownloading(false);
+    navigate("/");
+  };
+
+  const containerSize = useResizeObserver(viewRef);
   const { nickname, handleJoin } = useEmitRoomJoin(roomId);
   const role = "audience";
   const { chatMessages, handleSendChat, setChatMessages } =
     useTextFeedbackListener({ roomId, nickname, role });
 
-  const { isPresentationEnded, setIsPresentationEnded } =
+  const { isDownloadModalOpen, setIsDownloadModalOpen } =
     usePresentationEndListener();
 
   useRoomInitListener({
@@ -120,18 +136,16 @@ const Audience = () => {
         />
       )}
       <ChoiceModal
-        isOpen={isPresentationEnded}
+        isOpen={isDownloadModalOpen}
         type="downloadPdf"
-        onCancel={() => setIsPresentationEnded(false)}
-        onFirst={() => setIsPresentationEnded(false)}
-        onSecond={async () => {
-          setIsPresentationEnded(false);
-          downloadCapturedPdf({
-            pageCount: totalPages,
-            setPage: setCurrentPage,
-          });
+        onCancel={() => setIsDownloadModalOpen(false)}
+        onFirst={() => {
+          setIsDownloadModalOpen(false);
+          navigate("/");
         }}
+        onSecond={handleDownload}
       />
+      {isDownloading && <DownloadProgress />}
     </div>
   );
 };

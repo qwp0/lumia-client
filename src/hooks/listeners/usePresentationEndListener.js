@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import socket from "@/socket/socket";
 
 export const usePresentationEndListener = () => {
-  const [isPresentationEnded, setIsPresentationEnded] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   useEffect(() => {
     const handlePresentationEnd = () => {
-      setIsPresentationEnded(true);
+      setIsDownloadModalOpen(true);
     };
 
     socket.on("presentation-end", handlePresentationEnd);
@@ -17,5 +17,5 @@ export const usePresentationEndListener = () => {
     };
   }, []);
 
-  return { isPresentationEnded, setIsPresentationEnded };
+  return { isDownloadModalOpen, setIsDownloadModalOpen };
 };
