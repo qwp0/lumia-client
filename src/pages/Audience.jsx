@@ -9,14 +9,17 @@ import CursorOverlay from "@/components/common/CursorOverlay";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
+import ChoiceModal from "@/components/modal/ChoiceModal";
 import { useEmitCursorMove } from "@/hooks/emitters/useEmitCursorMove";
 import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
 import { useDrawDataListener } from "@/hooks/listeners/useDrawDataListener";
+import { usePresentationEndListener } from "@/hooks/listeners/usePresentationEndListener";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useSlideChangeListener } from "@/hooks/listeners/useSlideChangeListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
+import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
 const Audience = () => {
   const { roomId } = useParams();
@@ -36,6 +39,9 @@ const Audience = () => {
   const role = "audience";
   const { chatMessages, handleSendChat, setChatMessages } =
     useTextFeedbackListener({ roomId, nickname, role });
+
+  const { isPresentationEnded, setIsPresentationEnded } =
+    usePresentationEndListener();
 
   useRoomInitListener({
     setSlideUrl,
@@ -68,6 +74,7 @@ const Audience = () => {
     <div className="flex h-screen w-screen items-center justify-center">
       <div
         ref={viewRef}
+        id="capture-target"
         className="relative w-full max-w-[90vw]"
       >
         <DrawingCanvas
@@ -112,6 +119,19 @@ const Audience = () => {
           onClose={() => setIsChatOpen(false)}
         />
       )}
+      <ChoiceModal
+        isOpen={isPresentationEnded}
+        type="downloadPdf"
+        onCancel={() => setIsPresentationEnded(false)}
+        onFirst={() => setIsPresentationEnded(false)}
+        onSecond={async () => {
+          setIsPresentationEnded(false);
+          downloadCapturedPdf({
+            pageCount: totalPages,
+            setPage: setCurrentPage,
+          });
+        }}
+      />
     </div>
   );
 };
