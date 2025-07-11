@@ -6,6 +6,7 @@ import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
 import ChatPanel from "@/components/common/chat/ChatPanel";
 import ChatToggleButton from "@/components/common/chat/ChatToggleButton";
 import CursorOverlay from "@/components/common/CursorOverlay";
+import DownloadProgress from "@/components/common/DownloadProgress";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
 import ControlToolbar from "@/components/presentation/toolbar/ControlToolbar";
@@ -20,19 +21,19 @@ const Presentation = () => {
   const { roomId } = useParams();
   const location = useLocation();
   const slideUrl = location.state.slideUrl;
+  const viewRef = useRef(null);
 
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isAudienceCursorVisible, setIsAudienceCursorVisible] = useState(true);
-
-  const viewRef = useRef(null);
-  const containerSize = useResizeObserver(viewRef);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
-  const role = "host";
+  const containerSize = useResizeObserver(viewRef);
   const { nickname } = useEmitRoomJoin(roomId, "Host");
+  const role = "host";
   const { chatMessages, handleSendChat, setChatMessages } =
     useTextFeedbackListener({
       roomId,
@@ -78,6 +79,7 @@ const Presentation = () => {
       <ControlToolbar
         roomId={roomId}
         totalPages={totalPagesNumber}
+        setIsDownloading={setIsDownloading}
       />
       <div className="fixed top-20 right-3 z-10">
         <ToggleStatusButton
@@ -94,6 +96,7 @@ const Presentation = () => {
           onClose={() => setIsChatOpen(false)}
         />
       )}
+      {isDownloading && <DownloadProgress />}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { ExitIcon, LinkIcon } from "@/assets";
 import ToolBarButton from "@/components/common/button/ToolBarButton";
@@ -13,7 +14,8 @@ const controlTools = [
   { icon: ExitIcon, title: "발표 종료" },
 ];
 
-const ControlToolbar = ({ roomId, totalPages }) => {
+const ControlToolbar = ({ roomId, totalPages, setIsDownloading }) => {
+  const navigate = useNavigate();
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
 
@@ -35,19 +37,22 @@ const ControlToolbar = ({ roomId, totalPages }) => {
   };
   const handleExitOnly = () => {
     setIsEndPresentationModalOpen(false);
-
     sendPresentationEnd({ roomId });
+    navigate("/");
   };
 
   const handleDownloadAndExit = async () => {
     setIsEndPresentationModalOpen(false);
+    setIsDownloading(true);
 
     await downloadCapturedPdf({
       pageCount: totalPages,
       setPage: setCurrentPage,
     });
 
+    setIsDownloading(false);
     sendPresentationEnd({ roomId });
+    navigate("/");
   };
 
   return (
