@@ -1,6 +1,26 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+const waitForRender = async () => {
+  return new Promise((resolve) => {
+    const check = () => {
+      const element = document.getElementById("capture-target");
+      const canvas = element?.querySelector("canvas");
+
+      const canvasReady = canvas && canvas.width > 0 && canvas.height > 0;
+      const pdfReady = window.__pdfReady === true;
+
+      if (canvasReady && pdfReady) {
+        resolve();
+      } else {
+        requestAnimationFrame(check);
+      }
+    };
+
+    check();
+  });
+};
+
 export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
   const today = new Date().toISOString().split("T")[0];
   const fileName = `presentation_${today}.pdf`;
@@ -10,6 +30,8 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
   for (let i = 1; i <= pageCount; i++) {
     setPage(i);
     window.__pdfReady = false;
+    await waitForRender();
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     const element = document.getElementById("capture-target");
     const canvas = await html2canvas(element, {

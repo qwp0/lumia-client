@@ -19,6 +19,10 @@ const PDFViewer = ({ file, pageNumber, onLoadTotalPages, width }) => {
     onLoadTotalPages(numPages);
   };
 
+  const handleRenderSuccess = () => {
+    window.__pdfReady = true;
+  };
+
   return (
     <Document
       file={file}
@@ -28,6 +32,7 @@ const PDFViewer = ({ file, pageNumber, onLoadTotalPages, width }) => {
       <Page
         pageNumber={pageNumber}
         width={width}
+        onRenderSuccess={handleRenderSuccess}
       />
     </Document>
   );
