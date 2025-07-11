@@ -41,6 +41,7 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
     const canvas = await html2canvas(element, {
       useCORS: true,
       scale: 2,
+      logging: false,
     });
 
     const imgData = canvas.toDataURL("image/png");
