@@ -50,6 +50,7 @@ const Presentation = () => {
     <div className="flex h-screen w-screen items-center justify-center">
       <div
         ref={viewRef}
+        id="capture-target"
         className="relative w-full max-w-[90vw]"
       >
         <DrawingCanvas
