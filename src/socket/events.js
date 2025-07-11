@@ -29,3 +29,7 @@ export const getCurrentPage = ({ roomId }) => {
 export const sendDrawData = ({ roomId, page, drawings }) => {
   socket.emit("draw-data", { roomId, page, drawings });
 };
+
+export const sendPresentationEnd = ({ roomId }) => {
+  socket.emit("presentation-end", { roomId });
+};
