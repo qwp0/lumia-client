@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { ExitIcon, LinkIcon } from "@/assets";
 import ToolBarButton from "@/components/common/button/ToolBarButton";
 import ChoiceModal from "@/components/modal/ChoiceModal";
+import { sendPresentationEnd } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
@@ -34,14 +35,19 @@ const ControlToolbar = ({ roomId, totalPages }) => {
   };
   const handleExitOnly = () => {
     setIsEndPresentationModalOpen(false);
+
+    sendPresentationEnd({ roomId });
   };
 
   const handleDownloadAndExit = async () => {
     setIsEndPresentationModalOpen(false);
+
     await downloadCapturedPdf({
       pageCount: totalPages,
       setPage: setCurrentPage,
     });
+
+    sendPresentationEnd({ roomId });
   };
 
   return (
