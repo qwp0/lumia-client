@@ -1,6 +1,6 @@
 import { CursorIcon, EraserIcon, HighlighterIcon, PenIcon } from "@/assets";
 import ToolBarButton from "@/components/common/button/ToolBarButton";
-import ConfirmModal from "@/components/modal/ConfrmModal";
+import ChoiceModal from "@/components/modal/ChoiceModal";
 import ToolPopupController from "@/components/presentation/toolbar/toolSettings/ToolPopupController";
 import { TOOL_NAMES } from "@/constants/tool";
 import { sendDrawData } from "@/socket/events";
@@ -50,11 +50,12 @@ const DrawingToolbar = ({ roomId }) => {
           </div>
         ))}
       </div>
-      <ConfirmModal
+      <ChoiceModal
         isOpen={isDeleteModalOpen}
         type="deleteAll"
         onCancel={() => setDeleteModalOpen(false)}
-        onConfirm={() => {
+        onFirst={() => setDeleteModalOpen(false)}
+        onSecond={() => {
           clearCurrentPageCanvas();
           sendDrawData({ roomId, page: currentPage, drawings: [] });
           setDeleteModalOpen(false);

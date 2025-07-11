@@ -3,16 +3,20 @@ import toast from "react-hot-toast";
 
 import { ExitIcon, LinkIcon } from "@/assets";
 import ToolBarButton from "@/components/common/button/ToolBarButton";
-import ConfirmModal from "@/components/modal/ConfrmModal";
+import ChoiceModal from "@/components/modal/ChoiceModal";
+import { useDrawingStore } from "@/store/useDrawingStore";
+import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
 const controlTools = [
   { icon: LinkIcon, title: "링크 공유" },
   { icon: ExitIcon, title: "발표 종료" },
 ];
 
-const ControlToolbar = ({ roomId }) => {
+const ControlToolbar = ({ roomId, totalPages }) => {
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
+
+  const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
   const handleToolClick = (toolName) => {
     if (toolName === "발표 종료") {
@@ -27,6 +31,17 @@ const ControlToolbar = ({ roomId }) => {
         });
       });
     }
+  };
+  const handleExitOnly = () => {
+    setIsEndPresentationModalOpen(false);
+  };
+
+  const handleDownloadAndExit = async () => {
+    setIsEndPresentationModalOpen(false);
+    await downloadCapturedPdf({
+      pageCount: totalPages,
+      setPage: setCurrentPage,
+    });
   };
 
   return (
@@ -43,13 +58,13 @@ const ControlToolbar = ({ roomId }) => {
           />
         ))}
       </div>
-      <ConfirmModal
+
+      <ChoiceModal
         isOpen={isEndPresentationModalOpen}
         type="endPresentation"
         onCancel={() => setIsEndPresentationModalOpen(false)}
-        onConfirm={() => {
-          setIsEndPresentationModalOpen(false);
-        }}
+        onFirst={handleExitOnly}
+        onSecond={handleDownloadAndExit}
       />
     </>
   );

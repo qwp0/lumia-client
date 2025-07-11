@@ -75,7 +75,10 @@ const Presentation = () => {
         role={role}
       />
       <DrawingToolbar roomId={roomId} />
-      <ControlToolbar roomId={roomId} />
+      <ControlToolbar
+        roomId={roomId}
+        totalPages={totalPagesNumber}
+      />
       <div className="fixed top-20 right-3 z-10">
         <ToggleStatusButton
           label="참여자 커서 보기"
