@@ -14,7 +14,7 @@ export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
       page: currentPage,
       nickname,
       role,
-      message: text,
+      text,
     });
   };
 

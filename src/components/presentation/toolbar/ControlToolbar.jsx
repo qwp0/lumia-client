@@ -1,18 +1,25 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { ExitIcon, LinkIcon } from "@/assets";
 import ToolBarButton from "@/components/common/button/ToolBarButton";
-import ConfirmModal from "@/components/modal/ConfrmModal";
+import ChoiceModal from "@/components/modal/ChoiceModal";
+import { sendPresentationEnd } from "@/socket/events";
+import { useDrawingStore } from "@/store/useDrawingStore";
+import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
 const controlTools = [
   { icon: LinkIcon, title: "링크 공유" },
   { icon: ExitIcon, title: "발표 종료" },
 ];
 
-const ControlToolbar = ({ roomId }) => {
+const ControlToolbar = ({ roomId, totalPages, setIsDownloading }) => {
+  const navigate = useNavigate();
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
+
+  const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
   const handleToolClick = (toolName) => {
     if (toolName === "발표 종료") {
@@ -27,6 +34,25 @@ const ControlToolbar = ({ roomId }) => {
         });
       });
     }
+  };
+  const handleExitOnly = () => {
+    setIsEndPresentationModalOpen(false);
+    sendPresentationEnd({ roomId });
+    navigate("/");
+  };
+
+  const handleDownloadAndExit = async () => {
+    setIsEndPresentationModalOpen(false);
+    setIsDownloading(true);
+
+    await downloadCapturedPdf({
+      pageCount: totalPages,
+      setPage: setCurrentPage,
+    });
+
+    setIsDownloading(false);
+    sendPresentationEnd({ roomId });
+    navigate("/");
   };
 
   return (
@@ -43,13 +69,13 @@ const ControlToolbar = ({ roomId }) => {
           />
         ))}
       </div>
-      <ConfirmModal
+
+      <ChoiceModal
         isOpen={isEndPresentationModalOpen}
         type="endPresentation"
         onCancel={() => setIsEndPresentationModalOpen(false)}
-        onConfirm={() => {
-          setIsEndPresentationModalOpen(false);
-        }}
+        onFirst={handleExitOnly}
+        onSecond={handleDownloadAndExit}
       />
     </>
   );

@@ -28,6 +28,10 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
   let pdf = null;
 
   for (let i = 1; i <= pageCount; i++) {
+    if (i === 1) {
+      setPage(2);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     setPage(i);
     window.__pdfReady = false;
     await waitForRender();
@@ -37,6 +41,7 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
     const canvas = await html2canvas(element, {
       useCORS: true,
       scale: 2,
+      logging: false,
     });
 
     const imgData = canvas.toDataURL("image/png");

@@ -4,13 +4,13 @@ export const joinRoom = (roomId, nickname) => {
   socket.emit("join_room", { roomId, nickname });
 };
 
-export const sendTextFeedback = ({ roomId, page, nickname, role, message }) => {
+export const sendTextFeedback = ({ roomId, page, nickname, role, text }) => {
   socket.emit("text-feedback", {
     roomId,
     page,
     nickname,
     role,
-    message,
+    text,
   });
 };
 
@@ -28,4 +28,8 @@ export const getCurrentPage = ({ roomId }) => {
 
 export const sendDrawData = ({ roomId, page, drawings }) => {
   socket.emit("draw-data", { roomId, page, drawings });
+};
+
+export const sendPresentationEnd = ({ roomId }) => {
+  socket.emit("presentation-end", { roomId });
 };
