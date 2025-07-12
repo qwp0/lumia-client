@@ -127,14 +127,15 @@ const Audience = () => {
           onToggle={() => setIsCursorSharing((prev) => !prev)}
         />
       </div>
-      <ChatToggleButton onClick={() => setIsChatOpen((prev) => !prev)} />
-      {isChatOpen && (
-        <ChatPanel
-          messages={chatMessages[currentPage] || []}
-          onSend={handleSendChat}
-          onClose={() => setIsChatOpen(false)}
-        />
-      )}
+      <ChatToggleButton
+        onClick={() => setIsChatOpen((prev) => !prev)}
+        isChatOpen={isChatOpen}
+      />
+      <ChatPanel
+        messages={chatMessages}
+        onSend={handleSendChat}
+        isOpen={isChatOpen}
+      />
       <ChoiceModal
         isOpen={isDownloadModalOpen}
         type="downloadPdf"

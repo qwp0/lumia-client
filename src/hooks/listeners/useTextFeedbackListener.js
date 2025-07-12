@@ -5,7 +5,7 @@ import socket from "@/socket/socket";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
-  const [chatMessages, setChatMessages] = useState({});
+  const [chatMessages, setChatMessages] = useState([]);
   const currentPage = useDrawingStore((state) => state.currentPage);
 
   const handleSendChat = (text) => {
@@ -22,12 +22,9 @@ export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
     if (!nickname || !role) return;
 
     const handleReceive = ({ nickname, role, time, text, page }) => {
-      const newMessage = { nickname, role, time, text };
+      const newMessage = { nickname, role, time, text, page };
 
-      setChatMessages((prev) => ({
-        ...prev,
-        [page]: [...(prev[page] || []), newMessage],
-      }));
+      setChatMessages((prev) => [...prev, newMessage]);
     };
 
     socket.on("text-feedback", handleReceive);
