@@ -88,14 +88,15 @@ const Presentation = () => {
           onToggle={() => setIsAudienceCursorVisible((prev) => !prev)}
         />
       </div>
-      <ChatToggleButton onClick={() => setIsChatOpen((prev) => !prev)} />
-      {isChatOpen && (
-        <ChatPanel
-          messages={chatMessages[currentPage] || []}
-          onSend={handleSendChat}
-          onClose={() => setIsChatOpen(false)}
-        />
-      )}
+      <ChatToggleButton
+        onClick={() => setIsChatOpen((prev) => !prev)}
+        isChatOpen={isChatOpen}
+      />
+      <ChatPanel
+        messages={chatMessages[currentPage] || []}
+        onSend={handleSendChat}
+        isOpen={isChatOpen}
+      />
       {isDownloading && <DownloadProgress />}
     </div>
   );
