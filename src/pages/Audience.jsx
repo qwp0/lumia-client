@@ -132,7 +132,7 @@ const Audience = () => {
         isChatOpen={isChatOpen}
       />
       <ChatPanel
-        messages={chatMessages[currentPage] || []}
+        messages={chatMessages}
         onSend={handleSendChat}
         isOpen={isChatOpen}
       />
