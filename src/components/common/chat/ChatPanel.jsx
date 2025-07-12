@@ -1,7 +1,17 @@
+import { useEffect, useRef } from "react";
+
 import ChatInputForm from "@/components/common/chat/ChatInputForm";
 import ChatMessage from "@/components/common/chat/ChatMessage";
 
 const ChatPanel = ({ messages, onSend, isOpen }) => {
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <aside
       className={`fixed right-6 bottom-20 z-30 flex h-[75%] w-[360px] flex-col rounded-2xl bg-white shadow-xl transition-all duration-300 ${
@@ -21,6 +31,7 @@ const ChatPanel = ({ messages, onSend, isOpen }) => {
             />
           );
         })}
+        <div ref={messagesEndRef} />
       </ul>
       <ChatInputForm onSend={onSend} />
     </aside>
