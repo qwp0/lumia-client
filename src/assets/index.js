@@ -14,7 +14,7 @@ import EmoticonIcon from "@/assets/icons/emoticon.svg?react";
 import EraserIcon from "@/assets/icons/eraser.svg?react";
 import ExitIcon from "@/assets/icons/exit.svg?react";
 import FileUploadIcon from "@/assets/icons/file-upload.svg?react";
-import HighlighterIcon from "@/assets/icons/highlighter.svg?react ";
+import HighlighterIcon from "@/assets/icons/highlighter.svg?react";
 import LineIcon from "@/assets/icons/line.svg?react";
 import LinkIcon from "@/assets/icons/link.svg?react";
 import PenIcon from "@/assets/icons/pen.svg?react";
