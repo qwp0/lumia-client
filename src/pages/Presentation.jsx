@@ -32,8 +32,12 @@ const Presentation = () => {
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
 
   const containerSize = useResizeObserver(viewRef);
-  const { nickname } = useEmitRoomJoin(roomId, "Host");
+
   const role = "host";
+  const nickname = "Host";
+
+  useEmitRoomJoin({ roomId, nickname });
+
   const { chatMessages, handleSendChat, setChatMessages } =
     useTextFeedbackListener({
       roomId,
