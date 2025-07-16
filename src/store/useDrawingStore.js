@@ -27,6 +27,7 @@ export const useDrawingStore = create((set, get) => ({
         [pageNumber]: drawings,
       },
     })),
+  clearPageDrawings: () => set({ pageDrawings: {} }),
   clearCurrentPageCanvas: () => {
     const canvas = get().canvasRef;
     const page = get().currentPage;

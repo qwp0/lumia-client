@@ -8,11 +8,13 @@ import Header from "@/components/home/Header";
 import Slogan from "@/components/home/Slogan";
 import Uploader from "@/components/home/Uploader";
 import { useDraggingFile } from "@/hooks/useDraggingFile";
+import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { clearPageDrawings } = useDrawingStore();
   const { isDragging, droppedFile } = useDraggingFile();
 
   const handleUpload = async (file) => {
@@ -26,6 +28,7 @@ const Home = () => {
       const roomId = await postCreateRoom(slideUrl);
 
       if (roomId) {
+        clearPageDrawings();
         navigate(`/presentation/${roomId}`, {
           state: { slideUrl },
         });
