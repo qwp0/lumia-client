@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 
 import { sendTextFeedback } from "@/socket/events";
 import socket from "@/socket/socket";
+import { useChatStore } from "@/store/useChatStore";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
+export const useTextFeedbackListener = ({
+  roomId,
+  nickname,
+  role,
+  isChatOpen,
+}) => {
   const [chatMessages, setChatMessages] = useState([]);
   const currentPage = useDrawingStore((state) => state.currentPage);
+  const setUnread = useChatStore((state) => state.setUnread);
 
   const handleSendChat = (text) => {
     sendTextFeedback({
@@ -25,6 +32,10 @@ export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
       const newMessage = { nickname, role, time, text, page };
 
       setChatMessages((prev) => [...prev, newMessage]);
+
+      if (!isChatOpen) {
+        setUnread(true);
+      }
     };
 
     socket.on("text-feedback", handleReceive);
@@ -32,7 +43,7 @@ export const useTextFeedbackListener = ({ roomId, nickname, role }) => {
     return () => {
       socket.off("text-feedback", handleReceive);
     };
-  }, [roomId, nickname, role]);
+  }, [roomId, nickname, role, isChatOpen]);
 
   return {
     chatMessages,

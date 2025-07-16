@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
@@ -19,6 +19,7 @@ import { useSlideChangeListener } from "@/hooks/listeners/useSlideChangeListener
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import { useCheckRoomValid } from "@/hooks/useCheckRoomValid";
 import useResizeObserver from "@/hooks/useResizeObserver";
+import { useChatStore } from "@/store/useChatStore";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
@@ -37,6 +38,7 @@ const Audience = () => {
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
+  const setUnread = useChatStore((state) => state.setUnread);
 
   const handleDownload = async () => {
     setIsDownloadModalOpen(false);
@@ -59,7 +61,7 @@ const Audience = () => {
   useEmitRoomJoin({ roomId, nickname });
 
   const { chatMessages, handleSendChat, setChatMessages } =
-    useTextFeedbackListener({ roomId, nickname, role });
+    useTextFeedbackListener({ roomId, nickname, role, isChatOpen });
 
   const { isDownloadModalOpen, setIsDownloadModalOpen } =
     usePresentationEndListener();
@@ -81,6 +83,12 @@ const Audience = () => {
 
   useSlideChangeListener(isFollowing, roomId);
   useDrawDataListener();
+
+  useEffect(() => {
+    if (isChatOpen) {
+      setUnread(false);
+    }
+  }, [isChatOpen]);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">

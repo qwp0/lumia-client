@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
@@ -15,6 +15,7 @@ import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
 import useResizeObserver from "@/hooks/useResizeObserver";
+import { useChatStore } from "@/store/useChatStore";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
@@ -30,6 +31,7 @@ const Presentation = () => {
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const { setCurrentPage, setPageDrawings } = useDrawingStore();
+  const setUnread = useChatStore((state) => state.setUnread);
 
   const containerSize = useResizeObserver(viewRef);
 
@@ -43,6 +45,7 @@ const Presentation = () => {
       roomId,
       nickname,
       role,
+      isChatOpen,
     });
 
   useRoomInitListener({
@@ -50,6 +53,12 @@ const Presentation = () => {
     setCurrentPage,
     setPageDrawings,
   });
+
+  useEffect(() => {
+    if (isChatOpen) {
+      setUnread(false);
+    }
+  }, [isChatOpen]);
 
   if (!slideUrl) return <Navigate to="/notfound" />;
 
