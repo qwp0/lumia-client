@@ -26,7 +26,7 @@ const ControlToolbar = ({ roomId, totalPages, setIsDownloading }) => {
       setIsEndPresentationModalOpen(true);
     }
     if (toolName === "링크 공유") {
-      const audienceLink = `${window.location.origin}/audience/${roomId}`;
+      const audienceLink = `${window.location.origin}/enter/${roomId}`;
 
       navigator.clipboard.writeText(audienceLink).then(() => {
         toast.success("링크가 복사되었습니다.", {

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
 import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
@@ -9,7 +9,6 @@ import CursorOverlay from "@/components/common/CursorOverlay";
 import DownloadProgress from "@/components/common/DownloadProgress";
 import PDFViewer from "@/components/common/viewer/PDFViewer";
 import SlideNavigation from "@/components/common/viewer/SlideNavigation";
-import AudienceEnterModal from "@/components/modal/AudienceEnterModal";
 import ChoiceModal from "@/components/modal/ChoiceModal";
 import { useEmitCursorMove } from "@/hooks/emitters/useEmitCursorMove";
 import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
@@ -26,6 +25,7 @@ const Audience = () => {
   const { roomId } = useParams();
   const viewRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [slideUrl, setSlideUrl] = useState("");
   const [totalPages, setTotalPages] = useState(null);
@@ -51,8 +51,11 @@ const Audience = () => {
   };
 
   const containerSize = useResizeObserver(viewRef);
-  const { nickname, handleJoin } = useEmitRoomJoin(roomId);
   const role = "audience";
+  const nickname = location.state?.nickname || "";
+
+  useEmitRoomJoin({ roomId, nickname });
+
   const { chatMessages, handleSendChat, setChatMessages } =
     useTextFeedbackListener({ roomId, nickname, role });
 
@@ -76,15 +79,6 @@ const Audience = () => {
 
   useSlideChangeListener(isFollowing, roomId);
   useDrawDataListener();
-
-  if (!nickname) {
-    return (
-      <AudienceEnterModal
-        isOpen={true}
-        onJoin={handleJoin}
-      />
-    );
-  }
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
