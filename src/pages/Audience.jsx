@@ -17,6 +17,7 @@ import { usePresentationEndListener } from "@/hooks/listeners/usePresentationEnd
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useSlideChangeListener } from "@/hooks/listeners/useSlideChangeListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
+import { useCheckRoomValid } from "@/hooks/useCheckRoomValid";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
@@ -80,6 +81,10 @@ const Audience = () => {
   useSlideChangeListener(isFollowing, roomId);
   useDrawDataListener();
 
+  const isValidRoom = useCheckRoomValid(roomId);
+
+  if (isValidRoom === null) return null;
+
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       <div
@@ -133,7 +138,10 @@ const Audience = () => {
       <ChoiceModal
         isOpen={isDownloadModalOpen}
         type="downloadPdf"
-        onCancel={() => setIsDownloadModalOpen(false)}
+        onCancel={() => {
+          setIsDownloadModalOpen(false);
+          navigate("/");
+        }}
         onFirst={() => {
           setIsDownloadModalOpen(false);
           navigate("/");
