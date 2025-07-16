@@ -14,6 +14,7 @@ import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
 import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
+import { useCheckRoomValid } from "@/hooks/useCheckRoomValid";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
@@ -50,6 +51,10 @@ const Presentation = () => {
     setCurrentPage,
     setPageDrawings,
   });
+
+  const isValidRoom = useCheckRoomValid(roomId);
+
+  if (isValidRoom === null) return null;
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">

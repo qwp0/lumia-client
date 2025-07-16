@@ -10,6 +10,7 @@ import CornerRightBottomIcon from "@/assets/icons/corner-right-bottom.svg?react"
 import CornerRightTopIcon from "@/assets/icons/corner-right-top.svg?react";
 import CursorIcon from "@/assets/icons/cursor.svg?react";
 import DialogCheckIcon from "@/assets/icons/dialog-check.svg?react";
+import DoorIcon from "@/assets/icons/door.svg?react";
 import EmoticonIcon from "@/assets/icons/emoticon.svg?react";
 import EraserIcon from "@/assets/icons/eraser.svg?react";
 import ExitIcon from "@/assets/icons/exit.svg?react";
@@ -36,6 +37,7 @@ export {
   CornerRightTopIcon,
   CursorIcon,
   DialogCheckIcon,
+  DoorIcon,
   EmoticonIcon,
   EraserIcon,
   ExitIcon,
