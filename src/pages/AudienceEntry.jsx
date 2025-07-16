@@ -11,9 +11,7 @@ const AudienceEntry = () => {
     navigate(`/audience/${roomId}`, { state: { nickname } });
   };
 
-  const isValidRoom = useCheckRoomValid(roomId);
-
-  if (isValidRoom === null) return null;
+  useCheckRoomValid(roomId);
 
   return (
     <AudienceEnterModal

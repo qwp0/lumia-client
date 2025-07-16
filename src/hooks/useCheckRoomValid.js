@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getRoomExists } from "@/api/getRoomExists";
 
 export const useCheckRoomValid = (roomId) => {
-  const [isValidRoom, setIsValidRoom] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,11 +11,7 @@ export const useCheckRoomValid = (roomId) => {
       try {
         const exists = await getRoomExists(roomId);
 
-        if (!exists) {
-          navigate("/notfound");
-        } else {
-          setIsValidRoom(true);
-        }
+        if (!exists) navigate("/notfound");
       } catch {
         navigate("/notfound");
       }
@@ -24,6 +19,4 @@ export const useCheckRoomValid = (roomId) => {
 
     checkRoom();
   }, [roomId]);
-
-  return isValidRoom;
 };

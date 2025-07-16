@@ -51,6 +51,7 @@ const Audience = () => {
     navigate("/");
   };
 
+  useCheckRoomValid(roomId);
   const containerSize = useResizeObserver(viewRef);
   const role = "audience";
   const nickname = location.state?.nickname || "";
@@ -80,10 +81,6 @@ const Audience = () => {
 
   useSlideChangeListener(isFollowing, roomId);
   useDrawDataListener();
-
-  const isValidRoom = useCheckRoomValid(roomId);
-
-  if (isValidRoom === null) return null;
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
