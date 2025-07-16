@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 
 import ToggleStatusButton from "@/components/common/button/ToggleStatusButton";
 import DrawingCanvas from "@/components/common/canvas/DrawingCanvas";
@@ -14,14 +14,13 @@ import DrawingToolbar from "@/components/presentation/toolbar/DrawingToolbar";
 import { useEmitRoomJoin } from "@/hooks/emitters/useEmitRoomJoin";
 import { useRoomInitListener } from "@/hooks/listeners/useRoomInitListener";
 import { useTextFeedbackListener } from "@/hooks/listeners/useTextFeedbackListener";
-import { useCheckRoomValid } from "@/hooks/useCheckRoomValid";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
 const Presentation = () => {
   const { roomId } = useParams();
   const location = useLocation();
-  const slideUrl = location.state.slideUrl;
+  const slideUrl = location.state?.slideUrl;
   const viewRef = useRef(null);
 
   const [totalPagesNumber, setTotalPagesNumber] = useState(null);
@@ -52,9 +51,7 @@ const Presentation = () => {
     setPageDrawings,
   });
 
-  const isValidRoom = useCheckRoomValid(roomId);
-
-  if (isValidRoom === null) return null;
+  if (!slideUrl) return <Navigate to="/notfound" />;
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
