@@ -2,8 +2,31 @@ import { create } from "zustand";
 
 import { HIGHLIGHTER_COLORS, PEN_COLORS } from "@/constants/colors";
 import { ERASER_MODES } from "@/constants/tool";
+import type { EraserMode, PageDrawings, Tool } from "@/types/drawing";
 
-export const useDrawingStore = create((set, get) => ({
+interface DrawingState {
+  activeTool: Tool | null;
+  penColor: string;
+  highlighterColor: string;
+  eraserMode: EraserMode;
+  isDeleteModalOpen: boolean;
+  canvasRef: HTMLCanvasElement | null;
+  currentPage: number;
+  pageDrawings: Record<number, PageDrawings>;
+
+  setActiveTool: (tool: Tool | null) => void;
+  setPenColor: (color: string) => void;
+  setHighlighterColor: (color: string) => void;
+  setEraserMode: (mode: EraserMode) => void;
+  setDeleteModalOpen: (isOpen: boolean) => void;
+  setCanvasRef: (ref: HTMLCanvasElement | null) => void;
+  setCurrentPage: (page: number) => void;
+  setPageDrawings: (pageNumber: number, drawings: PageDrawings) => void;
+  clearPageDrawings: () => void;
+  clearCurrentPageCanvas: () => void;
+}
+
+export const useDrawingStore = create<DrawingState>((set, get) => ({
   activeTool: null,
   penColor: PEN_COLORS[0],
   highlighterColor: HIGHLIGHTER_COLORS[0],
@@ -41,6 +64,7 @@ export const useDrawingStore = create((set, get) => ({
 
     if (canvas) {
       const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
