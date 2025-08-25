@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-const waitForRender = async () => {
+const waitForRender = async (): Promise<void> => {
   return new Promise((resolve) => {
     const check = () => {
       const element = document.getElementById("capture-target");
@@ -21,7 +21,13 @@ const waitForRender = async () => {
   });
 };
 
-export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
+export const downloadCapturedPdf = async ({
+  pageCount,
+  setPage,
+}: {
+  pageCount: number;
+  setPage: (page: number) => void;
+}) => {
   const today = new Date().toISOString().split("T")[0];
   const fileName = `presentation_${today}.pdf`;
   let first = true;
@@ -38,6 +44,7 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     const element = document.getElementById("capture-target");
+    if (!element) return;
     const canvas = await html2canvas(element, {
       useCORS: true,
       scale: 2,
@@ -56,14 +63,14 @@ export const downloadCapturedPdf = async ({ pageCount, setPage }) => {
       });
       first = false;
     } else {
-      pdf.addPage(
+      pdf?.addPage(
         [canvasWidth, canvasHeight],
         canvasWidth >= canvasHeight ? "landscape" : "portrait",
       );
     }
 
-    pdf.addImage(imgData, "PNG", 0, 0, canvasWidth, canvasHeight);
+    pdf?.addImage(imgData, "PNG", 0, 0, canvasWidth, canvasHeight);
   }
 
-  pdf.save(fileName);
+  pdf?.save(fileName);
 };

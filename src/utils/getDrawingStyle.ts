@@ -1,6 +1,11 @@
 import { TOOL_NAMES } from "@/constants/tool";
+import type { Tool } from "@/types/drawing";
 
-export const getDrawingStyle = (activeTool, penColor, highlighterColor) => {
+export const getDrawingStyle = (
+  activeTool: Tool | null,
+  penColor: string,
+  highlighterColor: string,
+) => {
   if (activeTool === TOOL_NAMES.PEN) {
     return { color: penColor, width: 2, alpha: 1.0 };
   }

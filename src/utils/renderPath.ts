@@ -1,4 +1,11 @@
-export const renderPath = (path, ctx, canvasWidth, canvasHeight) => {
+import type { Path } from "@/types/drawing";
+
+export const renderPath = (
+  path: Path,
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number,
+) => {
   if (!path.points.length) return;
 
   if (path.type === "eraser") {

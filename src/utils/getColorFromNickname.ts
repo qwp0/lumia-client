@@ -1,4 +1,4 @@
-export const getColorFromNickname = (nickname) => {
+export const getColorFromNickname = (nickname: string) => {
   const colors = [
     "bg-purple-500",
     "bg-blue-500",

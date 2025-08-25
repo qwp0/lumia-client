@@ -1,4 +1,7 @@
-export const getNormalizedPointerPosition = (e, canvas) => {
+export const getNormalizedPointerPosition = (
+  e: MouseEvent | React.MouseEvent,
+  canvas: HTMLCanvasElement | null,
+) => {
   if (!canvas) return { x: 0, y: 0 };
 
   const rect = canvas.getBoundingClientRect();
