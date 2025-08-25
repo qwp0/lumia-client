@@ -1,8 +1,19 @@
 import { useEffect } from "react";
 
 import { useDrawingStore } from "@/store/useDrawingStore";
+import type { CanvasRef, ContextRef } from "@/types/canvas";
 
-export const useCanvasSetup = (canvasRef, contextRef, containerSize) => {
+interface UseCanvasSetupParams {
+  canvasRef: CanvasRef;
+  contextRef: ContextRef;
+  containerSize: { width: number; height: number } | null;
+}
+
+export const useCanvasSetup = ({
+  canvasRef,
+  contextRef,
+  containerSize,
+}: UseCanvasSetupParams) => {
   const setCanvasRef = useDrawingStore((state) => state.setCanvasRef);
 
   useEffect(() => {

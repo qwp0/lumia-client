@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import socket from "@/socket/socket";
+import type { Cursor } from "@/types/cursor";
 
-export const useCursorMoveListener = (currentPage) => {
-  const [cursors, setCursors] = useState([]);
+export const useCursorMoveListener = (currentPage: number) => {
+  const [cursors, setCursors] = useState<Cursor[]>([]);
 
   useEffect(() => {
-    const handleCursor = ({ x, y, page, nickname }) => {
+    const handleCursor = ({ x, y, page, nickname }: Cursor) => {
       if (page !== currentPage) return;
 
       const isOutOfBounds = x < 0 || y < 0;
@@ -38,7 +39,9 @@ export const useCursorMoveListener = (currentPage) => {
 
     socket.on("cursor-move", handleCursor);
 
-    return () => socket.off("cursor-move", handleCursor);
+    return () => {
+      socket.off("cursor-move", handleCursor);
+    };
   }, [currentPage]);
 
   return cursors;

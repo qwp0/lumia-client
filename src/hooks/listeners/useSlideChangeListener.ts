@@ -4,7 +4,10 @@ import { getCurrentPage } from "@/socket/events";
 import socket from "@/socket/socket";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-export const useSlideChangeListener = (isFollowing, roomId) => {
+export const useSlideChangeListener = (
+  isFollowing: boolean,
+  roomId: string,
+) => {
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
   useEffect(() => {
@@ -12,7 +15,7 @@ export const useSlideChangeListener = (isFollowing, roomId) => {
       getCurrentPage({ roomId });
     }
 
-    const handlePageUpdate = ({ page }) => {
+    const handlePageUpdate = ({ page }: { page: number }) => {
       if (!isFollowing) return;
       setCurrentPage(page);
     };

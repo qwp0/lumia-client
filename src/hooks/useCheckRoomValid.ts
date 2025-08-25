@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { getRoomExists } from "@/api/getRoomExists";
 
-export const useCheckRoomValid = (roomId) => {
+export const useCheckRoomValid = (roomId: string) => {
   const navigate = useNavigate();
 
   useEffect(() => {

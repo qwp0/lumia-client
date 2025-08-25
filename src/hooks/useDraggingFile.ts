@@ -3,11 +3,11 @@ import toast from "react-hot-toast";
 
 export const useDraggingFile = () => {
   const [isDragging, setIsDragging] = useState(false);
-  const [droppedFile, setDroppedFile] = useState(null);
+  const [droppedFile, setDroppedFile] = useState<File | null>(null);
   const dragCounter = useRef(0);
 
   useEffect(() => {
-    const handleDragEnter = (e) => {
+    const handleDragEnter = (e: DragEvent) => {
       if (e.dataTransfer?.types.includes("Files")) {
         dragCounter.current++;
         setIsDragging(true);
@@ -21,12 +21,12 @@ export const useDraggingFile = () => {
       }
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: DragEvent) => {
       e.preventDefault();
       dragCounter.current = 0;
       setIsDragging(false);
 
-      const file = e.dataTransfer.files[0];
+      const file = e.dataTransfer?.files[0];
 
       if (file && file.type === "application/pdf") {
         setDroppedFile(file);
@@ -37,7 +37,7 @@ export const useDraggingFile = () => {
       }
     };
 
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: DragEvent) => {
       e.preventDefault();
     };
 

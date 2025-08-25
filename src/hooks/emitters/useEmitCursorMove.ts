@@ -2,15 +2,23 @@ import { useEffect } from "react";
 
 import { sendCursorPosition } from "@/socket/events";
 
+interface UseEmitCursorMoveParams {
+  viewRef: React.RefObject<HTMLElement>;
+  roomId: string;
+  nickname: string;
+  page: number;
+  isCursorSharing: boolean;
+}
+
 export const useEmitCursorMove = ({
   viewRef,
   roomId,
   nickname,
   page,
   isCursorSharing,
-}) => {
+}: UseEmitCursorMoveParams) => {
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!isCursorSharing) return;
 
       const rect = viewRef.current?.getBoundingClientRect();

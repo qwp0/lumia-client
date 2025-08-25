@@ -6,10 +6,16 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 import { getCanvasPointerPosition } from "@/utils/getCanvasPointerPosition";
 import { getDrawingStyle } from "@/utils/getDrawingStyle";
 import { getNormalizedPointerPosition } from "@/utils/getNormalizedPointerPosition";
+import type { CanvasRef, ContextRef } from "@/types/canvas";
+import type { Point, Path } from "@/types/drawing";
 
-export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
+export const useCanvasDrawing = (
+  contextRef: ContextRef,
+  canvasRef: CanvasRef,
+  roomId: string,
+) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const [currentPath, setCurrentPath] = useState([]);
+  const [currentPath, setCurrentPath] = useState<Point[]>([]);
 
   const { setPageDrawings } = useDrawingStore();
   const activeTool = useDrawingStore((state) => state.activeTool);
@@ -24,7 +30,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
 
   const style = getDrawingStyle(activeTool, penColor, highlighterColor);
 
-  const startDrawing = (e) => {
+  const startDrawing = (e: MouseEvent) => {
     if (!style) return;
 
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
@@ -34,6 +40,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
       canvasRef.current,
     );
     const ctx = contextRef.current;
+    if (!ctx) return;
 
     ctx.strokeStyle = style.color;
     ctx.lineWidth = style.width;
@@ -46,7 +53,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
     setIsDrawing(true);
   };
 
-  const draw = (e) => {
+  const draw = (e: MouseEvent) => {
     if (!isDrawing) return;
 
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
@@ -56,6 +63,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
       canvasRef.current,
     );
     const ctx = contextRef.current;
+    if (!ctx) return;
 
     ctx.lineTo(canvasX, canvasY);
     ctx.stroke();
@@ -63,7 +71,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
     setCurrentPath((prev) => [...prev, { x, y }]);
   };
 
-  const erase = (e) => {
+  const erase = (e: MouseEvent) => {
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
     const { canvasX, canvasY } = getCanvasPointerPosition(
       x,
@@ -71,25 +79,28 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
       canvasRef.current,
     );
     const ctx = contextRef.current;
+
     const size = 40;
 
-    ctx.clearRect(canvasX - size / 2, canvasY - size / 2, size, size);
+    ctx?.clearRect(canvasX - size / 2, canvasY - size / 2, size, size);
     setCurrentPath((prev) => [...prev, { x, y }]);
   };
 
   const stopDrawing = () => {
     if (!isDrawing) return;
     setIsDrawing(false);
-    contextRef.current.closePath();
+    contextRef.current?.closePath();
 
     if (currentPath.length === 0) return;
 
-    let newPath = null;
+    let newPath: Path | null = null;
 
     if (
       activeTool === TOOL_NAMES.PEN ||
       activeTool === TOOL_NAMES.HIGHLIGHTER
     ) {
+      if (!style) return;
+
       newPath = {
         type: activeTool,
         color: style.color,
@@ -107,7 +118,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
 
     if (newPath) {
       const existing = pageDrawings[currentPage]?.drawings || [];
-      const updatedDrawings = [...existing, newPath];
+      const updatedDrawings: Path[] = [...existing, newPath];
 
       setPageDrawings(currentPage, { drawings: updatedDrawings });
 
@@ -119,7 +130,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
     setCurrentPath([]);
   };
 
-  const onCanvasPointerDown = (e) => {
+  const onCanvasPointerDown = (e: MouseEvent) => {
     if (isPartialEraser) {
       const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
 
@@ -130,7 +141,7 @@ export const useCanvasDrawing = (contextRef, canvasRef, roomId) => {
     }
   };
 
-  const onCanvasPointerMove = (e) => {
+  const onCanvasPointerMove = (e: MouseEvent) => {
     if (!isDrawing) return;
     isPartialEraser ? erase(e) : draw(e);
   };

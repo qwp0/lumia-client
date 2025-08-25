@@ -2,7 +2,15 @@ import { useEffect } from "react";
 
 import { joinRoom } from "@/socket/events";
 
-export const useEmitRoomJoin = ({ roomId, nickname }) => {
+interface UseEmitRoomJoinParams {
+  roomId: string;
+  nickname: string;
+}
+
+export const useEmitRoomJoin = ({
+  roomId,
+  nickname,
+}: UseEmitRoomJoinParams) => {
   useEffect(() => {
     if (nickname) {
       joinRoom(roomId, nickname);
