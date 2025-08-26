@@ -3,11 +3,25 @@ import { createPortal } from "react-dom";
 import { CloseIcon, DialogCheckIcon } from "@/assets";
 import { MODAL_MESSAGES } from "@/constants/modalMessages";
 
-const ChoiceModal = ({ isOpen, type, onFirst, onSecond, onCancel }) => {
-  if (!isOpen || !type) return null;
+interface ChoiceModalProps {
+  isOpen: boolean;
+  type: keyof typeof MODAL_MESSAGES;
+  onFirst: () => void;
+  onSecond: () => void;
+  onCancel: () => void;
+}
 
+const ChoiceModal = ({
+  isOpen,
+  type,
+  onFirst,
+  onSecond,
+  onCancel,
+}: ChoiceModalProps) => {
   const modalRoot = document.getElementById("modal-root");
   const { title, description, firstText, secondText } = MODAL_MESSAGES[type];
+
+  if (!isOpen || !type || !modalRoot) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">

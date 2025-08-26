@@ -1,12 +1,24 @@
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
-import { useMemo } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({ file, pageNumber, onLoadTotalPages, width }) => {
+interface PDFViewerProps {
+  file: string;
+  pageNumber: number;
+  onLoadTotalPages: Dispatch<SetStateAction<number | null>>;
+  width: number;
+}
+
+const PDFViewer = ({
+  file,
+  pageNumber,
+  onLoadTotalPages,
+  width,
+}: PDFViewerProps) => {
   const options = useMemo(
     () => ({
       cMapUrl: "/cmaps/",
@@ -15,7 +27,7 @@ const PDFViewer = ({ file, pageNumber, onLoadTotalPages, width }) => {
     [],
   );
 
-  const handleLoadSuccess = ({ numPages }) => {
+  const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
     onLoadTotalPages(numPages);
   };
 

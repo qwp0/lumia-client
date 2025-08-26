@@ -1,13 +1,23 @@
-import { useEffect, useRef } from "react";
+import { MouseEventHandler, useEffect, useRef } from "react";
 
 import { useCanvasDrawing } from "@/hooks/useCanvasDrawing";
 import { useCanvasSetup } from "@/hooks/useCanvasSetup";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { renderPath } from "@/utils/renderPath";
 
-const DrawingCanvas = ({ roomId, isDrawable, containerSize }) => {
-  const canvasRef = useRef(null);
-  const contextRef = useRef(null);
+interface DrawingCanvasProps {
+  roomId: string;
+  isDrawable: boolean;
+  containerSize: { width: number; height: number };
+}
+
+const DrawingCanvas = ({
+  roomId,
+  isDrawable,
+  containerSize,
+}: DrawingCanvasProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
   const currentPage = useDrawingStore((state) => state.currentPage);
   const pageDrawings = useDrawingStore((state) => state.pageDrawings);

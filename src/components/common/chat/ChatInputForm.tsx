@@ -1,20 +1,27 @@
 import { SendIcon } from "@/assets";
+import { useRef } from "react";
 
-const ChatInputForm = ({ onSend }) => {
+interface ChatInputFormProps {
+  onSend: (message: string) => void;
+}
+
+const ChatInputForm = ({ onSend }: ChatInputFormProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        const value = e.target.message.value;
+        const value = inputRef.current?.value || "";
 
         if (!value.trim()) return;
         onSend(value);
-        e.target.reset();
+        if (inputRef.current) inputRef.current.value = "";
       }}
       className="absolute bottom-0 flex w-full items-center gap-2 px-4 py-3"
     >
       <input
-        name="message"
+        ref={inputRef}
         type="text"
         autoComplete="off"
         placeholder="의견을 남겨보세요!"

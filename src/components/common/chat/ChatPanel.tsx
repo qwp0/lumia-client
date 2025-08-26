@@ -2,9 +2,16 @@ import { useEffect, useRef } from "react";
 
 import ChatInputForm from "@/components/common/chat/ChatInputForm";
 import ChatMessage from "@/components/common/chat/ChatMessage";
+import type { ChatMessage as ChatMessageType } from "@/types/chat";
 
-const ChatPanel = ({ messages, onSend, isOpen }) => {
-  const messagesEndRef = useRef(null);
+interface ChatPanelProps {
+  messages: ChatMessageType[];
+  onSend: (message: string) => void;
+  isOpen: boolean;
+}
+
+const ChatPanel = ({ messages, onSend, isOpen }: ChatPanelProps) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {

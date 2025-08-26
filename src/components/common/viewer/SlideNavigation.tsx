@@ -1,13 +1,21 @@
 import { ArrowLeft, ArrowRight } from "@/assets";
 import { sendSlideChange } from "@/socket/events";
 
+interface SlideNavigationProps {
+  pageNumber: number;
+  totalPagesNumber: number | null;
+  onPageChange: (page: number) => void;
+  roomId: string;
+  role: string;
+}
+
 const SlideNavigation = ({
   pageNumber,
   totalPagesNumber,
   onPageChange,
   roomId,
   role,
-}) => {
+}: SlideNavigationProps) => {
   const goToPrevPage = () => {
     const newPage = pageNumber - 1;
 

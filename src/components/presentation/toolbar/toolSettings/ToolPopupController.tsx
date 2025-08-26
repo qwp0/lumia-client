@@ -4,7 +4,11 @@ import { HIGHLIGHTER_COLORS, PEN_COLORS } from "@/constants/colors";
 import { TOOL_NAMES } from "@/constants/tool";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-const ToolPopuController = ({ activeTool }) => {
+interface ToolPopupControllerProps {
+  activeTool: (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES] | null;
+}
+
+const ToolPopuController = ({ activeTool }: ToolPopupControllerProps) => {
   const penColor = useDrawingStore((state) => state.penColor);
   const highlighterColor = useDrawingStore((state) => state.highlighterColor);
   const { setPenColor, setHighlighterColor } = useDrawingStore();

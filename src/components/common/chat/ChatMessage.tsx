@@ -1,6 +1,11 @@
 import { getColorFromNickname } from "@/utils/getColorFromNickname";
+import type { ChatMessage } from "@/types/chat";
 
-const ChatMessage = ({ message }) => {
+interface ChatMessageProps {
+  message: ChatMessage;
+}
+
+const ChatMessage = ({ message }: ChatMessageProps) => {
   const { nickname, role, text, time, page } = message;
 
   const isHost = role === "host";

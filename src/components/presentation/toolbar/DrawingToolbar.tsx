@@ -6,7 +6,11 @@ import { TOOL_NAMES } from "@/constants/tool";
 import { sendDrawData } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
 
-const DrawingToolbar = ({ roomId }) => {
+interface DrawingToolbarProps {
+  roomId: string;
+}
+
+const DrawingToolbar = ({ roomId }: DrawingToolbarProps) => {
   const activeTool = useDrawingStore((state) => state.activeTool);
   const isDeleteModalOpen = useDrawingStore((state) => state.isDeleteModalOpen);
   const { setActiveTool, setDeleteModalOpen, clearCurrentPageCanvas } =
@@ -20,7 +24,10 @@ const DrawingToolbar = ({ roomId }) => {
     { title: TOOL_NAMES.CURSOR, type: "sticky", icon: CursorIcon },
   ];
 
-  const handleToolClick = (toolName, type) => {
+  const handleToolClick = (
+    toolName: (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES],
+    type: string,
+  ) => {
     if (type === "toggle") {
       setActiveTool(activeTool === toolName ? null : toolName);
     } else if (type === "sticky") {

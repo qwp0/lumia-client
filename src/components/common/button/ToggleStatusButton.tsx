@@ -1,4 +1,14 @@
-const ToggleStatusButton = ({ label, isActive, onToggle }) => {
+interface ToggleStatusButtonProps {
+  label: string;
+  isActive: boolean;
+  onToggle: () => void;
+}
+
+const ToggleStatusButton = ({
+  label,
+  isActive,
+  onToggle,
+}: ToggleStatusButtonProps) => {
   return (
     <button
       type="button"

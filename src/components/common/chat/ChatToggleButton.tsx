@@ -1,7 +1,12 @@
 import { ChatIcon, CloseIcon } from "@/assets";
 import { useChatStore } from "@/store/useChatStore";
 
-const ChatToggleButton = ({ onClick, isChatOpen }) => {
+interface ChatToggleButtonProps {
+  onClick: () => void;
+  isChatOpen: boolean;
+}
+
+const ChatToggleButton = ({ onClick, isChatOpen }: ChatToggleButtonProps) => {
   const isUnread = useChatStore((state) => state.isUnread);
 
   return (

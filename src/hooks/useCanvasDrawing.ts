@@ -30,8 +30,8 @@ export const useCanvasDrawing = (
 
   const style = getDrawingStyle(activeTool, penColor, highlighterColor);
 
-  const startDrawing = (e: MouseEvent) => {
-    if (!style) return;
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!style || !canvasRef.current) return;
 
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
     const { canvasX, canvasY } = getCanvasPointerPosition(
@@ -53,8 +53,8 @@ export const useCanvasDrawing = (
     setIsDrawing(true);
   };
 
-  const draw = (e: MouseEvent) => {
-    if (!isDrawing) return;
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !canvasRef.current) return;
 
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
     const { canvasX, canvasY } = getCanvasPointerPosition(
@@ -71,7 +71,9 @@ export const useCanvasDrawing = (
     setCurrentPath((prev) => [...prev, { x, y }]);
   };
 
-  const erase = (e: MouseEvent) => {
+  const erase = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current) return;
+
     const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
     const { canvasX, canvasY } = getCanvasPointerPosition(
       x,
@@ -130,7 +132,7 @@ export const useCanvasDrawing = (
     setCurrentPath([]);
   };
 
-  const onCanvasPointerDown = (e: MouseEvent) => {
+  const onCanvasPointerDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (isPartialEraser) {
       const { x, y } = getNormalizedPointerPosition(e, canvasRef.current);
 
@@ -141,7 +143,7 @@ export const useCanvasDrawing = (
     }
   };
 
-  const onCanvasPointerMove = (e: MouseEvent) => {
+  const onCanvasPointerMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
     isPartialEraser ? erase(e) : draw(e);
   };

@@ -1,7 +1,11 @@
 import { useCursorMoveListener } from "@/hooks/listeners/useCursorMoveListener";
 import { getColorFromNickname } from "@/utils/getColorFromNickname";
 
-const CursorOverlay = ({ currentPage }) => {
+interface CursorOverlayProps {
+  currentPage: number;
+}
+
+const CursorOverlay = ({ currentPage }: CursorOverlayProps) => {
   const cursors = useCursorMoveListener(currentPage);
 
   return (

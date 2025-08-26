@@ -4,18 +4,24 @@ import { useEffect, useRef } from "react";
 import { FileUploadIcon } from "@/assets";
 import spinner from "@/assets/lotties/spinner.json";
 
-const Uploader = ({ onUpload, droppedFile, isLoading }) => {
-  const fileInputRef = useRef(null);
+interface UploaderProps {
+  onUpload: (file: File) => Promise<void> | void;
+  droppedFile?: File | null;
+  isLoading: boolean;
+}
+
+const Uploader = ({ onUpload, droppedFile, isLoading }: UploaderProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     if (isLoading) return;
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    e.target.value = null;
+    e.target.value = "";
 
     if (file) {
       await onUpload(file);

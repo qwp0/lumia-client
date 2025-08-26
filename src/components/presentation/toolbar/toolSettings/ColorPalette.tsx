@@ -1,4 +1,14 @@
-const ColorPalette = ({ onSelect, selectedColor, colors }) => {
+interface ColorPaletteProps {
+  onSelect: (color: string) => void;
+  selectedColor: string;
+  colors: string[];
+}
+
+const ColorPalette = ({
+  onSelect,
+  selectedColor,
+  colors,
+}: ColorPaletteProps) => {
   return (
     <div className="absolute top-full mt-5 flex gap-2 rounded-lg bg-white p-2 shadow-lg">
       {colors.map((color) => (

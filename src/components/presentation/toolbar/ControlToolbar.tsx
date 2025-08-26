@@ -9,19 +9,29 @@ import { sendPresentationEnd } from "@/socket/events";
 import { useDrawingStore } from "@/store/useDrawingStore";
 import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
+interface ControlToolbarProps {
+  roomId: string;
+  totalPages: number | null;
+  setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const controlTools = [
   { icon: LinkIcon, title: "링크 공유" },
   { icon: ExitIcon, title: "발표 종료" },
 ];
 
-const ControlToolbar = ({ roomId, totalPages, setIsDownloading }) => {
+const ControlToolbar = ({
+  roomId,
+  totalPages,
+  setIsDownloading,
+}: ControlToolbarProps) => {
   const navigate = useNavigate();
   const [isEndPresentationModalOpen, setIsEndPresentationModalOpen] =
     useState(false);
 
   const setCurrentPage = useDrawingStore((state) => state.setCurrentPage);
 
-  const handleToolClick = (toolName) => {
+  const handleToolClick = (toolName: string) => {
     if (toolName === "발표 종료") {
       setIsEndPresentationModalOpen(true);
     }
@@ -42,6 +52,8 @@ const ControlToolbar = ({ roomId, totalPages, setIsDownloading }) => {
   };
 
   const handleDownloadAndExit = async () => {
+    if (totalPages == null) return;
+
     setIsEndPresentationModalOpen(false);
     setIsDownloading(true);
 

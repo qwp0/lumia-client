@@ -24,7 +24,7 @@ const Presentation = () => {
   const slideUrl = location.state?.slideUrl;
   const viewRef = useRef(null);
 
-  const [totalPagesNumber, setTotalPagesNumber] = useState(null);
+  const [totalPagesNumber, setTotalPagesNumber] = useState<number | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isAudienceCursorVisible, setIsAudienceCursorVisible] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);

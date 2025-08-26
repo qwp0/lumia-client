@@ -6,7 +6,9 @@ const EraserSelector = () => {
   const eraserMode = useDrawingStore((state) => state.eraserMode);
   const { setEraserMode, setDeleteModalOpen } = useDrawingStore();
 
-  const handleSelect = (mode) => {
+  const handleSelect = (
+    mode: (typeof ERASER_MODES)[keyof typeof ERASER_MODES],
+  ) => {
     if (mode === ERASER_MODES.PARTIAL) {
       setEraserMode(ERASER_MODES.PARTIAL);
     } else if (mode === ERASER_MODES.ALL) {
