@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { sendCursorPosition } from "@/socket/events";
 
 interface UseEmitCursorMoveParams {
-  viewRef: React.RefObject<HTMLElement>;
+  viewRef: React.RefObject<HTMLDivElement | null>;
   roomId: string;
   nickname: string;
   page: number;

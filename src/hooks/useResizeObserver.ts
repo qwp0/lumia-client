@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
-const useResizeObserver = (ref: React.RefObject<HTMLElement>) => {
+const useResizeObserver = (ref: React.RefObject<HTMLDivElement | null>) => {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
-    if (!ref.current) return;
+    const target = ref.current;
+    if (!target) return;
 
     const updateSize = () => {
-      const { width, height } = ref.current.getBoundingClientRect();
+      const { width, height } = target.getBoundingClientRect();
 
       setSize({ width, height });
     };
@@ -16,7 +17,7 @@ const useResizeObserver = (ref: React.RefObject<HTMLElement>) => {
 
     const observer = new ResizeObserver(updateSize);
 
-    observer.observe(ref.current);
+    observer.observe(target);
 
     return () => observer.disconnect();
   }, [ref]);

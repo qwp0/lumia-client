@@ -17,7 +17,7 @@ const Home = () => {
   const { clearPageDrawings } = useDrawingStore();
   const { isDragging, droppedFile } = useDraggingFile();
 
-  const handleUpload = async (file) => {
+  const handleUpload = async (file: File) => {
     setIsLoading(true);
 
     try {
@@ -33,8 +33,10 @@ const Home = () => {
           state: { slideUrl },
         });
       }
-    } catch (error) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     } finally {
       setIsLoading(false);
     }

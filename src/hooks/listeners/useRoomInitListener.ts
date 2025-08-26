@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 import socket from "@/socket/socket";
 import type { ChatMessage } from "@/types/chat";
 import type { PageDrawings } from "@/types/drawing";
 
 interface UseRoomInitListenerParams {
-  setSlideUrl?: (url: string | undefined) => void;
+  setSlideUrl?: Dispatch<SetStateAction<string>>;
   setChatMessages: (msgs: ChatMessage[]) => void;
   setCurrentPage: (page: number) => void;
   setPageDrawings: (page: number, drawings: PageDrawings) => void;
@@ -31,7 +31,7 @@ export const useRoomInitListener = ({
       feedbacks,
       drawings,
     }: InitRoomPayload) => {
-      setSlideUrl?.(slideUrl);
+      setSlideUrl?.(slideUrl ?? "");
       setCurrentPage(currentPage);
       setChatMessages(feedbacks || []);
 

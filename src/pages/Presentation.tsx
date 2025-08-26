@@ -38,6 +38,7 @@ const Presentation = () => {
   const role = "host";
   const nickname = "Host";
 
+  if (!roomId) return null;
   useEmitRoomJoin({ roomId, nickname });
 
   const { chatMessages, handleSendChat, setChatMessages } =

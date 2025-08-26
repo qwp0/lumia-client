@@ -7,10 +7,11 @@ const AudienceEntry = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
 
-  const handleSubmit = (nickname) => {
+  const handleSubmit = (nickname: string) => {
     navigate(`/audience/${roomId}`, { state: { nickname } });
   };
 
+  if (!roomId) return null;
   useCheckRoomValid(roomId);
 
   return (

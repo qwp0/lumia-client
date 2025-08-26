@@ -24,13 +24,13 @@ import { useDrawingStore } from "@/store/useDrawingStore";
 import { downloadCapturedPdf } from "@/utils/downloadCapturePdf";
 
 const Audience = () => {
-  const { roomId } = useParams();
-  const viewRef = useRef(null);
+  const { roomId } = useParams<{ roomId: string }>();
+  const viewRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [slideUrl, setSlideUrl] = useState("");
-  const [totalPages, setTotalPages] = useState(null);
+  const [slideUrl, setSlideUrl] = useState<string>("");
+  const [totalPages, setTotalPages] = useState<number | null>(null);
   const [isFollowing, setIsFollowing] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCursorSharing, setIsCursorSharing] = useState(true);
@@ -41,6 +41,8 @@ const Audience = () => {
   const setUnread = useChatStore((state) => state.setUnread);
 
   const handleDownload = async () => {
+    if (!totalPages) return;
+
     setIsDownloadModalOpen(false);
     setIsDownloading(true);
 
@@ -53,7 +55,9 @@ const Audience = () => {
     navigate("/");
   };
 
+  if (!roomId) return null;
   useCheckRoomValid(roomId);
+
   const containerSize = useResizeObserver(viewRef);
   const role = "audience";
   const nickname = location.state?.nickname || "";
