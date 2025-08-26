@@ -1,4 +1,4 @@
-export const getRoomExists = async (roomId) => {
+export const getRoomExists = async (roomId: string) => {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/room/${roomId}/exists`,
   );
