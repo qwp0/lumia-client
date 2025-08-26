@@ -6,14 +6,13 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
 
-    "allowJs": true,
-    "checkJs": false,
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
 
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": { "@/*": ["src/*"] },
+    "types": ["vite-plugin-svgr/client"]
   },
-  "include": ["src", "env.d.ts"]
+  "include": ["src", "env.d.ts", "global.d.ts"]
 }

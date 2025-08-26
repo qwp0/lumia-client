@@ -1,0 +1,54 @@
+import { useEffect } from "react";
+
+import { sendCursorPosition } from "@/socket/events";
+
+interface UseEmitCursorMoveParams {
+  viewRef: React.RefObject<HTMLDivElement | null>;
+  roomId: string;
+  nickname: string;
+  page: number;
+  isCursorSharing: boolean;
+}
+
+export const useEmitCursorMove = ({
+  viewRef,
+  roomId,
+  nickname,
+  page,
+  isCursorSharing,
+}: UseEmitCursorMoveParams) => {
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isCursorSharing) return;
+
+      const rect = viewRef.current?.getBoundingClientRect();
+
+      if (!rect) return;
+
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+
+      if (x < 0 || x > 1 || y < 0 || y > 1) return;
+
+      sendCursorPosition({ roomId, page, x, y, nickname });
+    };
+
+    const viewerElement = viewRef.current;
+
+    if (!viewerElement) return;
+
+    viewerElement.style.cursor = isCursorSharing
+      ? 'url("/cursors/cursor-share.png") 4 4, auto'
+      : "default";
+
+    viewerElement.addEventListener("mousemove", handleMouseMove);
+    viewerElement.addEventListener("mouseleave", () => {
+      sendCursorPosition({ roomId, page, x: -1, y: -1, nickname });
+    });
+
+    return () => {
+      viewerElement.removeEventListener("mousemove", handleMouseMove);
+      viewerElement.style.cursor = "default";
+    };
+  }, [viewRef, roomId, page, nickname, isCursorSharing]);
+};
